@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+	<title>Bài học chi tiết</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+	<style>
+		.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+		body { background-color: #101014; color: #F1F1F4; font-family: Inter, sans-serif; }
+	</style>
+	<script>
+		tailwind.config = {
+			darkMode: "class",
+			theme: { extend: { colors: {
+				"text-secondary":"#8A8F98","text-primary":"#F1F1F4","border-subtle":"#2C2C3A","background-app":"#101014",
+				"background":"#121319","surface-container-low":"#1b1b22","surface-container":"#1f1f26","surface-elevated":"#1F1F2E",
+				"surface-variant":"#34343b","primary":"#bdc2ff","primary-container":"#5e6ad2","on-primary-container":"#fdfaff","warning":"#F0C000"
+			}}}
+		}
+	</script>
+</head>
+<body class="bg-background-app text-text-primary overflow-hidden">
+<header class="bg-background border-b border-border-subtle flex justify-between items-center w-full px-4 h-10 fixed top-0 z-50">
+	<div class="flex items-center gap-3 text-sm">
+		<a href="/" class="text-primary font-semibold">OpenLearning</a>
+		<span class="text-text-secondary">/</span>
+		<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="text-text-secondary hover:text-primary" th:text="${danhMuc != null ? danhMuc.tenDanhMuc : 'Danh mục'}">Danh mục</a>
+	</div>
+	<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="bg-primary-container text-on-primary-container px-3 py-1 rounded text-xs">Danh sách bài học</a>
+</header>
+
+<div class="flex h-screen pt-10 overflow-hidden">
+	<aside class="bg-surface-container-low fixed left-0 top-10 h-full w-[220px] flex flex-col py-4 px-2 border-r border-border-subtle">
+		<h2 class="text-primary font-semibold px-2">Learning Hub</h2>
+		<nav class="mt-4 space-y-1 text-sm">
+			<div class="px-2 py-1 rounded bg-surface-variant text-primary">Chi tiết bài học</div>
+			<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="block px-2 py-1 rounded text-text-secondary hover:bg-surface-variant">Danh sách bài học</a>
+		</nav>
+	</aside>
+
+	<main class="ml-[220px] flex-1 overflow-y-auto bg-background-app">
+		<div class="max-w-[1200px] mx-auto px-6 py-6">
+			<nav class="flex items-center gap-1 text-xs text-text-secondary mb-3">
+				<span th:text="${danhMuc != null ? danhMuc.tenDanhMuc : 'Danh mục'}">Danh mục</span>
+				<span>></span>
+				<span class="text-primary" th:text="${baiHoc.tenBH}">Tên bài học</span>
+			</nav>
+
+			<div class="flex justify-between items-end mb-8">
+				<div>
+					<span class="text-primary text-xs uppercase tracking-wider">Lesson</span>
+					<h1 class="text-3xl font-semibold mt-1" th:text="${baiHoc.tenBH}">Lesson title</h1>
+					<p class="text-text-secondary mt-2 max-w-3xl" th:text="${baiHoc.noiDungBH}">Mô tả bài học</p>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-12 gap-8">
+				<div class="col-span-12 lg:col-span-8 space-y-8">
+					<section class="bg-surface-container rounded-xl overflow-hidden border border-border-subtle">
+						<div class="aspect-video bg-black">
+							<iframe th:if="${videoEmbedUrl != null and !#strings.isEmpty(videoEmbedUrl)}"
+									th:src="${videoEmbedUrl}"
+									class="w-full h-full"
+									allowfullscreen></iframe>
+							<div th:unless="${videoEmbedUrl != null and !#strings.isEmpty(videoEmbedUrl)}"
+								 class="w-full h-full flex items-center justify-center text-text-secondary">
+								Không có video cho bài học này
+							</div>
+						</div>
+						<div class="p-4 bg-surface-container-low flex justify-between items-center">
+							<span class="text-xs text-text-secondary">Nguồn video từ LinkURL trong CSDL</span>
+							<a th:href="${baiHoc.linkURL}" target="_blank" class="bg-primary text-black px-3 py-1 rounded text-xs font-semibold">Mở YouTube</a>
+						</div>
+					</section>
+
+					<section th:if="${!#lists.isEmpty(labs)}" class="bg-surface-elevated rounded-xl border border-border-subtle p-6">
+						<h3 class="text-xl font-semibold mb-4">Interactive Lab</h3>
+						<div class="space-y-4">
+							<div th:each="lab : ${labs}"
+								 th:attr="data-lab-initial=${lab.trangThaiBanDau},data-lab-expected=${lab.trangThaiDung}"
+								 class="border border-border-subtle rounded-lg p-4 lab-card">
+								<div class="font-semibold" th:text="${lab.tenThucHanh}">Tên lab</div>
+								<p class="text-text-secondary text-sm mt-1" th:text="${lab.moTaThucHanh}">Mô tả</p>
+								<div th:id="'lab-ui-' + ${lab.maTH}" class="mt-3 bg-surface-container border border-border-subtle rounded p-3"></div>
+								<input type="hidden" th:id="'lab-input-' + ${lab.maTH}" th:value="${lab.trangThaiBanDau}" />
+								<div class="mt-3 flex items-center gap-2">
+									<button type="button"
+											th:attr="data-lab-id=${lab.maTH}"
+											class="lab-check-btn bg-primary-container text-on-primary-container px-3 py-1 rounded text-xs font-semibold">
+										Kiểm tra
+									</button>
+									<span class="text-xs text-text-secondary">Thao tác trên component rồi bấm kiểm tra</span>
+								</div>
+								<div th:id="'lab-result-' + ${lab.maTH}" class="text-xs mt-2"></div>
+							</div>
+						</div>
+					</section>
+
+					<section th:if="${!#lists.isEmpty(quizItems)}" class="space-y-4">
+						<h3 class="text-sm uppercase text-text-secondary tracking-wider">Knowledge Check</h3>
+						<div th:each="q,iter : ${quizItems}" class="bg-surface-container border border-border-subtle rounded-xl p-5">
+							<div class="flex justify-between mb-4">
+								<span class="text-xs text-primary" th:text="'QUESTION ' + ${iter.index + 1} + '/' + ${#lists.size(quizItems)}">QUESTION 1/5</span>
+							</div>
+							<h4 class="font-semibold mb-4" th:text="${q.question.noiDungCauHoi}">Câu hỏi</h4>
+							<div class="space-y-2">
+								<label th:each="a : ${q.answers}" class="flex items-center gap-2 p-3 rounded border border-border-subtle text-sm text-text-secondary cursor-pointer">
+									<input type="radio"
+										   th:name="'q-' + ${q.question.maTN}"
+										   th:value="${a.maDA}"
+										   class="accent-indigo-400"/>
+									<span th:text="${a.noiDungDapAn}">Đáp án</span>
+								</label>
+							</div>
+							<div class="mt-3 flex items-center gap-2">
+								<button type="button"
+										th:attr="data-question-id=${q.question.maTN}"
+										class="quiz-check-btn bg-primary-container text-on-primary-container px-3 py-1 rounded text-xs font-semibold">
+									Kiểm tra đáp án
+								</button>
+							</div>
+							<div th:id="'quiz-result-' + ${q.question.maTN}" class="text-xs mt-3 text-text-secondary"></div>
+						</div>
+					</section>
+				</div>
+
+				<div class="col-span-12 lg:col-span-4 space-y-8">
+					<section class="space-y-4">
+						<h3 class="text-sm uppercase text-text-secondary tracking-wider">Tài nguyên</h3>
+						<div class="bg-surface-container border border-border-subtle rounded-xl overflow-hidden">
+							<a th:each="t : ${taiNguyens}" th:href="${t.linkURL}" target="_blank"
+							   class="flex items-center justify-between p-4 hover:bg-surface-variant border-b border-border-subtle last:border-b-0">
+								<div>
+									<p class="text-sm text-text-primary" th:text="${t.tenTaiNguyen}">Tên tài nguyên</p>
+									<p class="text-xs text-text-secondary" th:text="${t.linkURL}">link</p>
+								</div>
+								<span class="material-symbols-outlined text-text-secondary">open_in_new</span>
+							</a>
+							<div th:if="${#lists.isEmpty(taiNguyens)}" class="p-4 text-sm text-text-secondary">Chưa có tài nguyên.</div>
+						</div>
+					</section>
+
+					<section class="space-y-4">
+						<h3 class="text-sm uppercase text-text-secondary tracking-wider">Bài học cùng danh mục</h3>
+						<div class="space-y-2">
+							<a th:each="n : ${nextLessons}" th:href="@{/baihoc/{id}(id=${n.maBH})}"
+							   class="block bg-surface-container-low border border-border-subtle p-3 rounded hover:bg-surface-variant">
+								<p class="text-sm" th:text="${n.tenBH}">Tên bài học</p>
+							</a>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>
+<script>
+	const labAttempts = {};
+
+	function parseJsonObjectSafe(raw) {
+		try {
+			const value = JSON.parse(raw);
+			return value && typeof value === 'object' && !Array.isArray(value) ? value : null;
+		} catch {
+			return null;
+		}
+	}
+
+	function renderSimpleToggleLab(labId, keyLabel, initialValue, expectedValue) {
+		const target = document.getElementById(`lab-ui-${labId}`);
+		const hiddenInput = document.getElementById(`lab-input-${labId}`);
+		let current = initialValue;
+
+		const updateState = () => {
+			hiddenInput.value = `${keyLabel}: ${current}`;
+			currentSpan.textContent = current;
+		};
+
+		target.innerHTML = `
+			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="flex flex-wrap items-center gap-2">
+				<span class="text-xs text-text-secondary">${keyLabel}:</span>
+				<span id="lab-current-${labId}" class="text-xs px-2 py-1 rounded bg-surface-variant text-text-primary"></span>
+				<div class="inline-flex rounded overflow-hidden border border-border-subtle">
+					<button type="button" id="lab-choice-a-${labId}" class="text-xs px-3 py-1 bg-primary-container text-on-primary-container">${initialValue}</button>
+					<button type="button" id="lab-choice-b-${labId}" class="text-xs px-3 py-1 bg-surface-variant text-text-primary">${expectedValue}</button>
+				</div>
+			</div>
+		`;
+
+		const currentSpan = document.getElementById(`lab-current-${labId}`);
+		const btnA = document.getElementById(`lab-choice-a-${labId}`);
+		const btnB = document.getElementById(`lab-choice-b-${labId}`);
+		const applyBtnStyle = () => {
+			const aActive = current === initialValue;
+			btnA.className = `text-xs px-3 py-1 ${aActive ? 'bg-primary-container text-on-primary-container' : 'bg-surface-variant text-text-primary'}`;
+			btnB.className = `text-xs px-3 py-1 ${!aActive ? 'bg-primary-container text-on-primary-container' : 'bg-surface-variant text-text-primary'}`;
+		};
+		btnA.addEventListener('click', () => {
+			current = initialValue;
+			updateState();
+			applyBtnStyle();
+		});
+		btnB.addEventListener('click', () => {
+			current = expectedValue;
+			updateState();
+			applyBtnStyle();
+		});
+		updateState();
+		applyBtnStyle();
+	}
+
+	function renderWidthLab(labId, initialValue, expectedValue) {
+		const target = document.getElementById(`lab-ui-${labId}`);
+		const hiddenInput = document.getElementById(`lab-input-${labId}`);
+		let current = initialValue;
+		const values = Array.from(new Set([initialValue, expectedValue, 'fixed', 'fill', 'hug']));
+
+		target.innerHTML = `
+			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="space-y-3">
+				<div class="text-xs text-text-secondary">Mô phỏng Width mode</div>
+				<div class="inline-flex rounded overflow-hidden border border-border-subtle" id="width-group-${labId}">
+					${values.map(v => `<button type="button" data-v="${v}" class="text-xs px-3 py-1 bg-surface-variant text-text-primary">${v}</button>`).join('')}
+				</div>
+				<div class="border border-border-subtle rounded p-3 bg-surface-container">
+					<div class="text-[11px] text-text-secondary mb-2">Preview Button</div>
+					<div id="width-preview-${labId}" class="h-8 rounded bg-primary-container text-on-primary-container flex items-center justify-center text-xs font-semibold">Button</div>
+				</div>
+			</div>
+		`;
+
+		const group = document.getElementById(`width-group-${labId}`);
+		const preview = document.getElementById(`width-preview-${labId}`);
+		const update = () => {
+			hiddenInput.value = `width: ${current}`;
+			group.querySelectorAll('button').forEach((b) => {
+				const active = b.dataset.v === current;
+				b.className = `text-xs px-3 py-1 ${active ? 'bg-primary-container text-on-primary-container' : 'bg-surface-variant text-text-primary'}`;
+			});
+			if (current === 'fill') preview.style.width = '100%';
+			else if (current === 'hug') preview.style.width = '96px';
+			else preview.style.width = '160px';
+		};
+		group.addEventListener('click', (e) => {
+			const btn = e.target.closest('button[data-v]');
+			if (!btn) return;
+			current = btn.dataset.v;
+			update();
+		});
+		update();
+	}
+
+	function renderColumnsLab(labId, initialValue, expectedValue) {
+		const target = document.getElementById(`lab-ui-${labId}`);
+		const hiddenInput = document.getElementById(`lab-input-${labId}`);
+		let current = Number(initialValue) || 12;
+		const expected = Number(expectedValue) || current;
+
+		target.innerHTML = `
+			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="space-y-3">
+				<div class="flex items-center gap-2">
+					<label class="text-xs text-text-secondary">Số cột:</label>
+					<input id="columns-slider-${labId}" type="range" min="1" max="12" step="1" class="w-48" value="${current}">
+					<span id="columns-value-${labId}" class="text-xs px-2 py-1 rounded bg-surface-variant">${current}</span>
+				</div>
+				<div id="columns-preview-${labId}" class="grid gap-1"></div>
+				<div class="text-[11px] text-text-secondary">Mục tiêu: ${expected} cột</div>
+			</div>
+		`;
+
+		const slider = document.getElementById(`columns-slider-${labId}`);
+		const valueEl = document.getElementById(`columns-value-${labId}`);
+		const preview = document.getElementById(`columns-preview-${labId}`);
+		const update = () => {
+			valueEl.textContent = String(current);
+			hiddenInput.value = `columns: ${current}`;
+			preview.innerHTML = '';
+			preview.style.gridTemplateColumns = `repeat(${current}, minmax(0,1fr))`;
+			for (let i = 0; i < current; i++) {
+				const cell = document.createElement('div');
+				cell.className = 'h-3 rounded bg-primary-container/60';
+				preview.appendChild(cell);
+			}
+		};
+		slider.addEventListener('input', () => {
+			current = Number(slider.value);
+			update();
+		});
+		update();
+	}
+
+	function renderOrderLab(labId, initialValue, expectedValue) {
+		const target = document.getElementById(`lab-ui-${labId}`);
+		const hiddenInput = document.getElementById(`lab-input-${labId}`);
+		let current = initialValue;
+		target.innerHTML = `
+			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="space-y-3">
+				<div class="flex flex-wrap gap-2">
+					<button type="button" id="order-random-${labId}" class="text-xs px-3 py-1 rounded bg-surface-variant">Xáo trộn bước</button>
+					<button type="button" id="order-correct-${labId}" class="text-xs px-3 py-1 rounded bg-primary-container text-on-primary-container">Sắp xếp đúng</button>
+				</div>
+				<div id="order-status-${labId}" class="text-xs px-2 py-1 rounded bg-surface-variant inline-block"></div>
+			</div>
+		`;
+		const status = document.getElementById(`order-status-${labId}`);
+		const sync = () => {
+			hiddenInput.value = current;
+			status.textContent = `Trạng thái: ${current}`;
+		};
+		document.getElementById(`order-random-${labId}`).addEventListener('click', () => {
+			current = initialValue;
+			sync();
+		});
+		document.getElementById(`order-correct-${labId}`).addEventListener('click', () => {
+			current = expectedValue;
+			sync();
+		});
+		sync();
+	}
+
+	function renderJsonObjectLab(labId, initialObj, expectedObj) {
+		const target = document.getElementById(`lab-ui-${labId}`);
+		const hiddenInput = document.getElementById(`lab-input-${labId}`);
+		const keys = Array.from(new Set([...Object.keys(initialObj), ...Object.keys(expectedObj)]));
+
+		const controls = keys.map((key) => {
+			const initVal = initialObj[key];
+			const expectedVal = expectedObj[key];
+			const id = `lab-field-${labId}-${key}`;
+			const options = Array.from(new Set([initVal, expectedVal].map(v => v === null ? 'null' : String(v))));
+			const optionsHtml = options.map(v => `<option value="${v}">${v}</option>`).join('');
+			const selected = initVal === null ? 'null' : String(initVal);
+			return `
+				<div class="space-y-1">
+					<label for="${id}" class="text-xs text-text-secondary">${key}</label>
+					<select id="${id}" data-json-key="${key}" class="w-full bg-surface-variant border border-border-subtle rounded p-2 text-sm">
+						${optionsHtml}
+					</select>
+					<div class="text-[11px] text-text-secondary">Mục tiêu: ${expectedVal === null ? 'null' : String(expectedVal)}</div>
+				</div>
+			`;
+		}).join('');
+
+		target.innerHTML = `
+			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${controls}</div>
+		`;
+
+		const syncState = () => {
+			const obj = {};
+			target.querySelectorAll('select[data-json-key]').forEach((el) => {
+				const k = el.getAttribute('data-json-key');
+				const raw = el.value;
+				obj[k] = raw === 'null' ? null : raw;
+			});
+			hiddenInput.value = JSON.stringify(obj);
+		};
+
+		target.querySelectorAll('select[data-json-key]').forEach((el) => {
+			const key = el.getAttribute('data-json-key');
+			const initVal = initialObj[key];
+			el.value = initVal === null ? 'null' : String(initVal);
+			el.addEventListener('change', syncState);
+		});
+		syncState();
+	}
+
+	function initLabWidgets() {
+		document.querySelectorAll('.lab-card').forEach((card) => {
+			const btn = card.querySelector('.lab-check-btn');
+			if (!btn) return;
+			const labId = btn.dataset.labId;
+			const initialRaw = card.dataset.labInitial || '';
+			const expectedRaw = card.dataset.labExpected || '';
+
+			const initialObj = parseJsonObjectSafe(initialRaw);
+			const expectedObj = parseJsonObjectSafe(expectedRaw);
+			if (initialObj && expectedObj) {
+				renderJsonObjectLab(labId, initialObj, expectedObj);
+				return;
+			}
+
+			const initialParts = initialRaw.split(':');
+			const expectedParts = expectedRaw.split(':');
+			if (initialParts.length >= 2 && expectedParts.length >= 2) {
+				const key = initialParts[0].trim();
+				const initialValue = initialParts.slice(1).join(':').trim();
+				const expectedValue = expectedParts.slice(1).join(':').trim();
+
+				if (key.toLowerCase() === 'width') {
+					renderWidthLab(labId, initialValue, expectedValue);
+					return;
+				}
+				if (key.toLowerCase() === 'columns') {
+					renderColumnsLab(labId, initialValue, expectedValue);
+					return;
+				}
+				if (key.toLowerCase() === 'ordered' || key.toLowerCase() === 'order') {
+					renderOrderLab(labId, initialValue, expectedValue);
+					return;
+				}
+
+				renderSimpleToggleLab(labId, key, initialValue, expectedValue);
+				return;
+			}
+
+			// Fallback: one-click switch between start and expected state.
+			const target = document.getElementById(`lab-ui-${labId}`);
+			const hiddenInput = document.getElementById(`lab-input-${labId}`);
+			let current = initialRaw;
+			target.innerHTML = `
+				<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+				<div class="flex items-center gap-2">
+					<span id="lab-current-${labId}" class="text-xs px-2 py-1 rounded bg-surface-variant text-text-primary"></span>
+					<button type="button" id="lab-toggle-${labId}" class="text-xs px-3 py-1 rounded bg-primary-container text-on-primary-container">Đổi trạng thái</button>
+				</div>
+			`;
+			const currentSpan = document.getElementById(`lab-current-${labId}`);
+			const toggleBtn = document.getElementById(`lab-toggle-${labId}`);
+			const update = () => {
+				hiddenInput.value = current;
+				currentSpan.textContent = current || '(trống)';
+			};
+			toggleBtn.addEventListener('click', () => {
+				current = (current === expectedRaw) ? initialRaw : expectedRaw;
+				update();
+			});
+			update();
+		});
+	}
+
+	async function checkQuiz(questionId) {
+		const selected = document.querySelector(`input[name="q-${questionId}"]:checked`);
+		const resultEl = document.getElementById(`quiz-result-${questionId}`);
+		if (!selected) {
+			resultEl.innerHTML = '<span class="text-yellow-400">Vui lòng chọn một đáp án.</span>';
+			return;
+		}
+
+		const res = await fetch('/api/quiz/check', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ maDA: Number(selected.value) })
+		});
+		const data = await res.json();
+		if (!data.ok) {
+			resultEl.innerHTML = '<span class="text-red-400">Lỗi kiểm tra đáp án.</span>';
+			return;
+		}
+
+		if (data.correct) {
+			resultEl.innerHTML = '<span class="text-green-400">Chính xác!</span>';
+		} else {
+			resultEl.innerHTML = `<span class="text-red-400">Sai.</span> <span class="text-text-secondary">Giải thích: ${data.explanation || ''}</span>`;
+		}
+	}
+
+	async function checkLab(labId) {
+		const inputEl = document.getElementById(`lab-input-${labId}`);
+		const resultEl = document.getElementById(`lab-result-${labId}`);
+		const userState = inputEl.value;
+
+		labAttempts[labId] = (labAttempts[labId] || 0) + 1;
+
+		const res = await fetch('/api/lab/check', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ maTH: Number(labId), userState })
+		});
+		const data = await res.json();
+		if (!data.ok) {
+			resultEl.innerHTML = '<span class="text-red-400">Lỗi kiểm tra lab.</span>';
+			return;
+		}
+
+		if (data.correct) {
+			resultEl.innerHTML = '<span class="text-green-400">Thao tác đúng! JSON trạng thái khớp với trạng thái đúng trong CSDL.</span>';
+		} else {
+			let hintText = '';
+			if (labAttempts[labId] >= 3 && data.hint) {
+				hintText = ` <span class="text-yellow-400">Gợi ý: ${data.hint}</span>`;
+			}
+			resultEl.innerHTML = `<span class="text-red-400">Chưa đúng.</span>${hintText}`;
+		}
+	}
+
+	document.querySelectorAll('.quiz-check-btn').forEach((btn) => {
+		btn.addEventListener('click', () => checkQuiz(btn.dataset.questionId));
+	});
+	document.querySelectorAll('.lab-check-btn').forEach((btn) => {
+		btn.addEventListener('click', () => checkLab(btn.dataset.labId));
+	});
+	initLabWidgets();
+</script>
+</body>
+</html>
+

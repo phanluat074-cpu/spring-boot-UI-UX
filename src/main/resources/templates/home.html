@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+	<style>
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+		}
+		body {
+			background-color: #101014;
+			color: #F1F1F4;
+			-webkit-font-smoothing: antialiased;
+		}
+		.custom-scrollbar::-webkit-scrollbar {
+			width: 4px;
+		}
+		.custom-scrollbar::-webkit-scrollbar-track {
+			background: #121319;
+		}
+		.custom-scrollbar::-webkit-scrollbar-thumb {
+			background: #2C2C3A;
+			border-radius: 10px;
+		}
+	</style>
+	<script id="tailwind-config">
+		tailwind.config = {
+			darkMode: "class",
+			theme: {
+				extend: {
+					colors: {
+						"text-secondary": "#8A8F98",
+						"text-primary": "#F1F1F4",
+						"accent-glow": "rgba(94, 106, 210, 0.15)",
+						"neutral-card": "#1B1B25",
+						"surface-container-lowest": "#0d0e14",
+						"surface-container-low": "#1b1b22",
+						"surface-container": "#1f1f26",
+						"surface-container-high": "#292930",
+						"surface-container-highest": "#34343b",
+						"surface": "#121319",
+						"background": "#121319",
+						"background-app": "#101014",
+						"border-subtle": "#2C2C3A",
+						"primary": "#bdc2ff",
+						"primary-container": "#5e6ad2",
+						"primary-hover": "#4E5BBF",
+						"on-primary-container": "#fdfaff"
+					},
+					borderRadius: {
+						DEFAULT: "0.25rem",
+						lg: "0.5rem",
+						xl: "0.75rem",
+						full: "9999px"
+					},
+					spacing: {
+						gutter: "16px",
+						xl: "24px",
+						xs: "2px",
+						base: "4px",
+						"row-height-compact": "28px",
+						md: "12px",
+						sm: "8px",
+						xxl: "32px",
+						lg: "16px",
+						"row-height-default": "36px"
+					},
+					fontFamily: {
+						"issue-title": ["Inter"],
+						"body-default": ["Inter"],
+						"h5-panel-title": ["Inter"],
+						"shortcut-hint": ["JetBrains Mono"],
+						metadata: ["Inter"],
+						"h3-page-title": ["Inter"],
+						"nav-item": ["Inter"],
+						"h2-settings": ["Inter"],
+						"h1-landing": ["Inter"],
+						"h4-view-title": ["Inter"],
+						"group-header": ["Inter"]
+					},
+					fontSize: {
+						"issue-title": ["14px", { lineHeight: "1.4", fontWeight: "500" }],
+						"body-default": ["14px", { lineHeight: "1.5", fontWeight: "400" }],
+						"h5-panel-title": ["16px", { lineHeight: "1.4", fontWeight: "600" }],
+						"shortcut-hint": ["11px", { lineHeight: "20px", fontWeight: "500" }],
+						metadata: ["12px", { lineHeight: "1.2", fontWeight: "500" }],
+						"h3-page-title": ["24px", { lineHeight: "1.2", letterSpacing: "-0.03em", fontWeight: "600" }],
+						"nav-item": ["13px", { lineHeight: "1.4", fontWeight: "500" }],
+						"h2-settings": ["32px", { lineHeight: "1.2", letterSpacing: "-0.03em", fontWeight: "600" }],
+						"h1-landing": ["40px", { lineHeight: "1.2", letterSpacing: "-0.03em", fontWeight: "600" }],
+						"h4-view-title": ["20px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" }],
+						"group-header": ["11px", { lineHeight: "1.2", letterSpacing: "0.05em", fontWeight: "600" }]
+					}
+				},
+			},
+		}
+	</script>
+	<title>Open Learning • UI/UX</title>
+</head>
+<body class="bg-background-app text-text-primary font-body-default text-body-default overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="bg-background fixed top-0 w-full flex justify-between items-center px-lg h-row-height-default border-b border-border-subtle z-50">
+	<div class="flex items-center gap-xl">
+		<span class="font-h3-page-title text-h3-page-title text-primary tracking-tighter">OpenLearning</span>
+	</div>
+	<div class="flex items-center gap-md">
+		<a href="/admin" class="text-nav-item text-text-secondary hover:text-primary transition-colors">Admin</a>
+		<button class="bg-primary-container text-on-primary-container px-md h-[28px] rounded font-nav-item text-nav-item hover:bg-primary-hover active:scale-95 transition-all">Get Started</button>
+	</div>
+</nav>
+
+<!-- Main Content Canvas -->
+<main class="pt-[36px] min-h-screen">
+	<!-- Hero Section -->
+	<section class="relative h-[400px] flex items-center justify-center overflow-hidden">
+		<div class="absolute inset-0 bg-gradient-to-br from-background-app via-background to-surface-container-low"></div>
+		<div class="relative z-10 text-center px-lg max-w-3xl">
+			<h1 class="font-h1-landing text-h1-landing text-text-primary mb-lg tracking-tight">Master UI/UX with Precision</h1>
+			<p class="text-h4-view-title font-h4-view-title text-text-secondary mb-xxl max-w-2xl mx-auto">
+				Deep-dive into engineering-grade design systems and user experience patterns.
+			</p>
+			<div class="flex justify-center">
+				<button class="h-row-height-default px-xl bg-primary-container text-on-primary-container rounded-lg font-h5-panel-title text-h5-panel-title hover:shadow-[0_0_20px_rgba(94,106,210,0.4)] transition-all">Start Learning</button>
+			</div>
+		</div>
+	</section>
+
+	<!-- Specialization Tracks (DANHMUC from SQL Server) -->
+	<section class="px-xxl py-xxl bg-background-app" id="tracks">
+		<div class="max-w-6xl mx-auto">
+			<div class="mb-xl text-center">
+				<span class="font-group-header text-group-header text-primary uppercase block mb-base">Core Curriculum</span>
+				<h2 class="font-h3-page-title text-h3-page-title">Specialization Tracks</h2>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+				<a th:each="dm : ${danhMucs}"
+				   th:href="@{/danhmuc/{id}(id=${dm.maDM})}"
+				   class="group bg-surface-container-low border border-border-subtle rounded-xl p-xxl hover:border-primary-container transition-all flex flex-col items-center text-center">
+					<div class="w-16 h-16 rounded-full bg-surface-container-high border border-border-subtle flex items-center justify-center mb-xl group-hover:bg-primary-container transition-all overflow-hidden">
+						<img th:if="${dm.iconURL != null and !#strings.isEmpty(dm.iconURL)}"
+							 th:src="${dm.iconURL}"
+							 th:alt="${dm.tenDanhMuc}"
+							 class="w-10 h-10 object-contain">
+						<span th:unless="${dm.iconURL != null and !#strings.isEmpty(dm.iconURL)}"
+							  class="material-symbols-outlined text-[32px]">brush</span>
+					</div>
+					<h3 class="font-h2-settings text-h2-settings text-text-primary mb-md" th:text="${dm.tenDanhMuc}">UI Design</h3>
+				</a>
+
+				<!-- Empty state -->
+				<div th:if="${danhMucs == null or #lists.isEmpty(danhMucs)}"
+					 class="bg-surface-container-low border border-border-subtle rounded-xl p-xxl text-center">
+					<div class="text-text-primary font-semibold mb-sm">Chưa có danh mục</div>
+					<div class="text-text-secondary">Hãy thêm dữ liệu vào bảng DANHMUC rồi refresh trang.</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="bg-background-app py-xl border-t border-border-subtle px-lg flex flex-col md:flex-row justify-between items-center gap-xl">
+		<div class="flex flex-col items-center md:items-start gap-base">
+			<span class="font-group-header text-group-header uppercase text-primary">OpenLearning UI/UX</span>
+			<p class="font-metadata text-metadata text-text-secondary">© 2026 OpenLearning</p>
+		</div>
+		<div class="flex flex-wrap justify-center gap-xl">
+			<a class="font-metadata text-metadata text-text-secondary hover:text-text-primary transition-colors" href="#">Changelog</a>
+			<a class="font-metadata text-metadata text-text-secondary hover:text-text-primary transition-colors" href="#">API</a>
+			<a class="font-metadata text-metadata text-text-secondary hover:text-text-primary transition-colors" href="#">Privacy</a>
+		</div>
+		<div class="flex gap-lg">
+			<span class="material-symbols-outlined text-text-secondary hover:text-primary cursor-pointer" data-icon="terminal">terminal</span>
+			<span class="material-symbols-outlined text-text-secondary hover:text-primary cursor-pointer" data-icon="language">language</span>
+		</div>
+	</footer>
+</main>
+</body>
+</html>
+
