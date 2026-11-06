@@ -1,6 +1,7 @@
 package com.example.demo.web;
 
 import com.example.demo.baihoc.BaiHocService;
+import com.example.demo.danhmuc.DanhMuc;
 import com.example.demo.dapan.DapAn;
 import com.example.demo.dapan.DapAnRepository;
 import com.example.demo.danhmuc.DanhMucService;
@@ -48,9 +49,31 @@ public class BaiHocController {
 	@GetMapping("/danhmuc/{maDM}")
 	public String danhSachBaiHoc(@PathVariable Integer maDM, Model model) {
 		model.addAttribute("maDM", maDM);
-		model.addAttribute("danhMuc", danhMucService.findById(maDM).orElse(null));
+		var danhMucOpt = danhMucService.findById(maDM);
+		var danhMuc = danhMucOpt.orElse(null);
+		model.addAttribute("danhMuc", danhMuc);
 		model.addAttribute("baiHocs", baiHocService.findByDanhMuc(maDM));
+		model.addAttribute("trackTheme", resolveTrackTheme(maDM, danhMuc));
+		model.addAttribute("uiMaDm", 1004);
+		model.addAttribute("uxMaDm", 1003);
 		return "baihoc-list";
+	}
+
+	/** UI vs UX styling on lesson list; defaults to UI. */
+	private static String resolveTrackTheme(Integer maDM, DanhMuc danhMuc) {
+		if (Integer.valueOf(1003).equals(maDM)) {
+			return "ux";
+		}
+		if (Integer.valueOf(1004).equals(maDM)) {
+			return "ui";
+		}
+		if (danhMuc != null && danhMuc.getTenDanhMuc() != null) {
+			String t = danhMuc.getTenDanhMuc().toLowerCase();
+			if (t.contains("ux")) {
+				return "ux";
+			}
+		}
+		return "ui";
 	}
 
 	@GetMapping("/baihoc/{maBH}")
@@ -74,6 +97,14 @@ public class BaiHocController {
 		model.addAttribute("taiNguyens", taiNguyenRepository.findByMaBHOrderByMaTaiNguyenAsc(maBH));
 		model.addAttribute("labs", interactiveLabRepository.findByMaBHOrderByMaTHAsc(maBH));
 		model.addAttribute("nextLessons", baiHocService.findByDanhMuc(baiHoc.getMaDM()).stream().limit(5).toList());
+		model.addAttribute("nextLesson",
+			baiHocService.findByDanhMuc(baiHoc.getMaDM()).stream()
+				.filter(b -> !b.getMaBH().equals(baiHoc.getMaBH()))
+				.findFirst()
+				.orElse(null));
+		model.addAttribute("trackTheme", resolveTrackTheme(baiHoc.getMaDM(), danhMuc));
+		model.addAttribute("uiMaDm", 1004);
+		model.addAttribute("uxMaDm", 1003);
 		return "baihoc-detail";
 	}
 

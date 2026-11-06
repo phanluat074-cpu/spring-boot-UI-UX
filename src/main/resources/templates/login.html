@@ -15,7 +15,7 @@
 					<h1 class="h5 mb-3">Đăng nhập Admin</h1>
 					<div th:if="${param.error}" class="alert alert-danger py-2">Sai tài khoản hoặc mật khẩu.</div>
 					<div th:if="${param.logout}" class="alert alert-success py-2">Bạn đã đăng xuất.</div>
-					<form method="post" action="/login">
+					<form id="formLogin" method="post" action="/login" novalidate>
 						<div class="mb-2">
 							<label class="form-label">Username</label>
 							<input class="form-control" name="username" required>
@@ -32,6 +32,12 @@
 		</div>
 	</div>
 </div>
+<script src="/js/admin-validation.js"></script>
+<script>
+AdminValidation.attachValidation('#formLogin', [
+	{ name: 'username', rules: [{ type: 'required', message: 'Tên đăng nhập không được để trống.' }]},
+	{ name: 'password', rules: [{ type: 'required', message: 'Mật khẩu không được để trống.' }]}
+]);
+</script>
 </body>
 </html>
-

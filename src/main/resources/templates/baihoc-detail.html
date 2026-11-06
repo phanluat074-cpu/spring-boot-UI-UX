@@ -1,162 +1,351 @@
 <!DOCTYPE html>
-<html class="dark" lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html class="light" lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8"/>
 	<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-	<title>Bài học chi tiết</title>
 	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Be+Vietnam+Pro:ital,wght@0,400;0,700;0,800;1,800&amp;display=swap" rel="stylesheet"/>
 	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-	<style>
-		.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-		body { background-color: #101014; color: #F1F1F4; font-family: Inter, sans-serif; }
-	</style>
-	<script>
+	<script id="tailwind-config">
 		tailwind.config = {
 			darkMode: "class",
-			theme: { extend: { colors: {
-				"text-secondary":"#8A8F98","text-primary":"#F1F1F4","border-subtle":"#2C2C3A","background-app":"#101014",
-				"background":"#121319","surface-container-low":"#1b1b22","surface-container":"#1f1f26","surface-elevated":"#1F1F2E",
-				"surface-variant":"#34343b","primary":"#bdc2ff","primary-container":"#5e6ad2","on-primary-container":"#fdfaff","warning":"#F0C000"
-			}}}
+			theme: {
+				extend: {
+					colors: {
+						"on-primary-fixed": "#00201e",
+						"secondary": "#745c00",
+						"on-surface-variant": "#3d4948",
+						"secondary-fixed": "#ffe089",
+						"on-secondary-fixed": "#241a00",
+						"inverse-primary": "#67d8d1",
+						"surface-tint": "#006a66",
+						"on-secondary-fixed-variant": "#574500",
+						"secondary-container": "#fcd03d",
+						"on-primary": "#ffffff",
+						"secondary-fixed-dim": "#edc22e",
+						"surface-container-lowest": "#ffffff",
+						"on-error": "#ffffff",
+						"on-primary-container": "#003634",
+						"on-tertiary-fixed-variant": "#773210",
+						"error-container": "#ffdad6",
+						"on-secondary": "#ffffff",
+						"surface-dim": "#d6dbda",
+						"background": "#f5faf9",
+						"outline-variant": "#bcc9c7",
+						"accent-dark": "#E6B800",
+						"on-tertiary": "#ffffff",
+						"error": "#E74C3C",
+						"on-primary-fixed-variant": "#00504d",
+						"outline": "#6d7a78",
+						"tertiary-fixed-dim": "#ffb597",
+						"primary-dark": "#1E8C86",
+						"tertiary": "#954925",
+						"surface-variant": "#dee4e2",
+						"surface": "#f5faf9",
+						"coral-dark": "#D45233",
+						"primary-light": "#3CC4BD",
+						"cream": "#FFF8E7",
+						"surface-container-low": "#f0f5f3",
+						"tertiary-fixed": "#ffdbcd",
+						"on-background": "#171d1c",
+						"on-surface": "#171d1c",
+						"primary": "#006a66",
+						"on-tertiary-fixed": "#360f00",
+						"on-secondary-container": "#705900",
+						"accent-light": "#FFE47A",
+						"primary-fixed-dim": "#67d8d1",
+						"primary-bg": "#E8F6F5",
+						"inverse-on-surface": "#edf2f0",
+						"primary-container": "#2ba8a2",
+						"surface-container-highest": "#dee4e2",
+						"tertiary-container": "#db8058",
+						"surface-container-high": "#e4e9e8",
+						"on-error-container": "#93000a",
+						"success": "#27AE60",
+						"surface-card": "#FFFFFF",
+						"coral-light": "#FF8A6A",
+						"primary-fixed": "#85f5ee",
+						"on-tertiary-container": "#581d00",
+						"surface-bright": "#f5faf9",
+						"accent-gold": "#FFD23F",
+						"inverse-surface": "#2c3131",
+						"surface-container": "#eaefed",
+						"coral": "#EF6C4A",
+						"sky-blue": "#5DADE2",
+						"surface-base": "#EFF8F7"
+					},
+					borderRadius: {
+						DEFAULT: "0.25rem",
+						lg: "0.5rem",
+						xl: "0.75rem",
+						full: "9999px"
+					},
+					spacing: {
+						md: "24px",
+						xs: "8px",
+						base: "8px",
+						sm: "16px",
+						xl: "48px",
+						lg: "32px"
+					},
+					fontFamily: {
+						h3: ["Plus Jakarta Sans"],
+						sm: ["Plus Jakarta Sans"],
+						body: ["Plus Jakarta Sans"],
+						h2: ["Be Vietnam Pro"],
+						display: ["Be Vietnam Pro"],
+						h1: ["Be Vietnam Pro"],
+						xs: ["Plus Jakarta Sans"]
+					},
+					fontSize: {
+						h3: ["32px", { fontWeight: "700" }],
+						sm: ["24px", { fontWeight: "500" }],
+						body: ["28px", { fontWeight: "500" }],
+						h2: ["36px", { letterSpacing: "4px", fontWeight: "800" }],
+						display: ["72px", { letterSpacing: "6px", fontWeight: "800" }],
+						h1: ["48px", { letterSpacing: "4px", fontWeight: "800" }],
+						xs: ["20px", { fontWeight: "500" }]
+					}
+				}
+			}
 		}
 	</script>
+	<style>
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+		}
+		.shadow-card {
+			box-shadow: 0 8px 0px 0px rgba(0, 106, 102, 0.1);
+		}
+		.ribbon-banner {
+			position: relative;
+			background: #FFF8E7;
+		}
+		.ribbon-banner::before,
+		.ribbon-banner::after {
+			content: '';
+			position: absolute;
+			bottom: -12px;
+			border: 12px solid transparent;
+			z-index: -1;
+		}
+		.ribbon-banner::before {
+			left: 0;
+			border-right-color: #d1c8b3;
+			border-top-color: #d1c8b3;
+		}
+		.ribbon-banner::after {
+			right: 0;
+			border-left-color: #d1c8b3;
+			border-top-color: #d1c8b3;
+		}
+		.glow-gold { box-shadow: 0 0 20px rgba(252, 208, 61, 0.4); }
+		.glow-coral { box-shadow: 0 0 20px rgba(239, 108, 74, 0.35); }
+		.glow-teal { box-shadow: 0 0 20px rgba(0, 106, 102, 0.3); }
+		.retro-border { border: 6px solid #FFF8E7; }
+		.dashed-header { border-bottom: 3px dashed #bcc9c7; }
+		.pb-detail-nav { padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px)); }
+	</style>
+	<title th:text="${baiHoc != null and baiHoc.tenBH != null ? baiHoc.tenBH + ' — UI/UX LABS' : 'Chi tiết bài học'}">Chi tiết bài học</title>
 </head>
-<body class="bg-background-app text-text-primary overflow-hidden">
-<header class="bg-background border-b border-border-subtle flex justify-between items-center w-full px-4 h-10 fixed top-0 z-50">
-	<div class="flex items-center gap-3 text-sm">
-		<a href="/" class="text-primary font-semibold">OpenLearning</a>
-		<span class="text-text-secondary">/</span>
-		<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="text-text-secondary hover:text-primary" th:text="${danhMuc != null ? danhMuc.tenDanhMuc : 'Danh mục'}">Danh mục</a>
+<body class="bg-primary-bg font-body text-on-background min-h-screen pb-detail-nav md:pb-lg">
+<!-- Top Navigation -->
+<header class="bg-surface-container-low sticky top-0 z-50 shadow-card px-md py-xs flex justify-between items-center w-full">
+	<div class="flex items-center gap-sm min-w-0">
+		<div class="relative flex -space-x-4 shrink-0 hidden sm:flex">
+			<div class="w-8 h-12 bg-primary rounded-lg rotate-[-24deg] shadow-sm border border-white/20"></div>
+			<div class="w-8 h-12 bg-secondary rounded-lg rotate-[-12deg] shadow-sm border border-white/20"></div>
+			<div class="w-8 h-12 bg-coral rounded-lg rotate-[0deg] shadow-sm border border-white/20 z-10"></div>
+			<div class="w-8 h-12 bg-sky-blue rounded-lg rotate-[12deg] shadow-sm border border-white/20"></div>
+			<div class="w-8 h-12 bg-tertiary rounded-lg rotate-[24deg] shadow-sm border border-white/20"></div>
+		</div>
+		<a href="/" class="font-display text-h2 text-primary italic tracking-tight truncate">UI/UX LABS</a>
 	</div>
-	<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="bg-primary-container text-on-primary-container px-3 py-1 rounded text-xs">Danh sách bài học</a>
+	<nav class="hidden md:flex items-center gap-lg">
+		<a class="text-on-surface-variant font-bold hover:scale-95 transition-transform" href="/">Home</a>
+		<a th:href="@{/danhmuc/{id}(id=${uiMaDm})}"
+		   th:classappend="${trackTheme == 'ui'} ? ' text-primary border-b-4 border-primary' : ''"
+		   class="text-on-surface-variant font-bold hover:scale-95 transition-transform pb-1">UI Track</a>
+		<a th:href="@{/danhmuc/{id}(id=${uxMaDm})}"
+		   th:classappend="${trackTheme == 'ux'} ? ' text-primary border-b-4 border-primary' : ''"
+		   class="text-on-surface-variant font-bold hover:scale-95 transition-transform pb-1">UX Track</a>
+		<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="text-on-surface-variant font-bold hover:scale-95 transition-transform">Lộ trình</a>
+		<a href="/admin" class="text-primary font-bold text-sm">Admin</a>
+	</nav>
+	<div class="flex items-center gap-md shrink-0">
+		<a th:href="${baiHoc.linkURL}" target="_blank" rel="noopener" class="material-symbols-outlined text-primary text-h3 hover:scale-95 transition-transform hidden sm:inline" title="Mở nguồn video">open_in_new</a>
+		<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="material-symbols-outlined text-primary text-h3 hover:scale-95 transition-transform" title="Danh sách bài học">list</a>
+	</div>
 </header>
 
-<div class="flex h-screen pt-10 overflow-hidden">
-	<aside class="bg-surface-container-low fixed left-0 top-10 h-full w-[220px] flex flex-col py-4 px-2 border-r border-border-subtle">
-		<h2 class="text-primary font-semibold px-2">Learning Hub</h2>
-		<nav class="mt-4 space-y-1 text-sm">
-			<div class="px-2 py-1 rounded bg-surface-variant text-primary">Chi tiết bài học</div>
-			<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="block px-2 py-1 rounded text-text-secondary hover:bg-surface-variant">Danh sách bài học</a>
-		</nav>
-	</aside>
-
-	<main class="ml-[220px] flex-1 overflow-y-auto bg-background-app">
-		<div class="max-w-[1200px] mx-auto px-6 py-6">
-			<nav class="flex items-center gap-1 text-xs text-text-secondary mb-3">
-				<span th:text="${danhMuc != null ? danhMuc.tenDanhMuc : 'Danh mục'}">Danh mục</span>
-				<span>></span>
-				<span class="text-primary" th:text="${baiHoc.tenBH}">Tên bài học</span>
-			</nav>
-
-			<div class="flex justify-between items-end mb-8">
-				<div>
-					<span class="text-primary text-xs uppercase tracking-wider">Lesson</span>
-					<h1 class="text-3xl font-semibold mt-1" th:text="${baiHoc.tenBH}">Lesson title</h1>
-					<p class="text-text-secondary mt-2 max-w-3xl" th:text="${baiHoc.noiDungBH}">Mô tả bài học</p>
+<main class="max-w-7xl mx-auto px-md py-lg flex flex-col lg:flex-row gap-lg">
+	<!-- Main column -->
+	<div class="flex-1 space-y-lg">
+		<!-- Video -->
+		<section class="space-y-sm">
+			<div class="ribbon-banner inline-block px-lg py-xs -rotate-2 mb-sm shadow-sm max-w-full">
+				<h2 class="font-h2 text-primary leading-tight break-words" th:text="${baiHoc.tenBH}">Lesson title</h2>
+			</div>
+			<p class="text-on-surface-variant text-sm max-w-3xl leading-relaxed" th:text="${baiHoc.noiDungBH}">Mô tả bài học</p>
+			<div class="retro-border rounded-xl bg-inverse-surface aspect-video relative overflow-hidden shadow-card group">
+				<iframe th:if="${videoEmbedUrl != null and !#strings.isEmpty(videoEmbedUrl)}"
+						th:src="${videoEmbedUrl}"
+						class="absolute inset-0 w-full h-full border-0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+						title="Video bài học"></iframe>
+				<div th:unless="${videoEmbedUrl != null and !#strings.isEmpty(videoEmbedUrl)}"
+					 class="w-full h-full min-h-[200px] flex flex-col items-center justify-center text-inverse-on-surface p-md text-center">
+					<span class="material-symbols-outlined text-5xl mb-sm opacity-70">smart_display</span>
+					<p>Chưa có video (LinkURL trong CSDL).</p>
+				</div>
+				<div th:if="${videoEmbedUrl != null and !#strings.isEmpty(videoEmbedUrl)}"
+					 class="absolute bottom-0 left-0 right-0 p-md bg-gradient-to-t from-black/80 to-transparent flex items-center gap-md pointer-events-none">
+					<span class="material-symbols-outlined text-white text-xl">pause</span>
+					<div class="flex-1 h-2 bg-white/20 rounded-full overflow-hidden">
+						<div class="w-1/3 h-full bg-primary-light"></div>
+					</div>
+					<span class="text-white font-xs text-xs opacity-90">YouTube</span>
+					<span class="material-symbols-outlined text-white text-xl">fullscreen</span>
 				</div>
 			</div>
+		</section>
 
-			<div class="grid grid-cols-12 gap-8">
-				<div class="col-span-12 lg:col-span-8 space-y-8">
-					<section class="bg-surface-container rounded-xl overflow-hidden border border-border-subtle">
-						<div class="aspect-video bg-black">
-							<iframe th:if="${videoEmbedUrl != null and !#strings.isEmpty(videoEmbedUrl)}"
-									th:src="${videoEmbedUrl}"
-									class="w-full h-full"
-									allowfullscreen></iframe>
-							<div th:unless="${videoEmbedUrl != null and !#strings.isEmpty(videoEmbedUrl)}"
-								 class="w-full h-full flex items-center justify-center text-text-secondary">
-								Không có video cho bài học này
-							</div>
-						</div>
-						<div class="p-4 bg-surface-container-low flex justify-between items-center">
-							<span class="text-xs text-text-secondary">Nguồn video từ LinkURL trong CSDL</span>
-							<a th:href="${baiHoc.linkURL}" target="_blank" class="bg-primary text-black px-3 py-1 rounded text-xs font-semibold">Mở YouTube</a>
-						</div>
-					</section>
-
-					<section th:if="${!#lists.isEmpty(labs)}" class="bg-surface-elevated rounded-xl border border-border-subtle p-6">
-						<h3 class="text-xl font-semibold mb-4">Interactive Lab</h3>
-						<div class="space-y-4">
-							<div th:each="lab : ${labs}"
-								 th:attr="data-lab-initial=${lab.trangThaiBanDau},data-lab-expected=${lab.trangThaiDung}"
-								 class="border border-border-subtle rounded-lg p-4 lab-card">
-								<div class="font-semibold" th:text="${lab.tenThucHanh}">Tên lab</div>
-								<p class="text-text-secondary text-sm mt-1" th:text="${lab.moTaThucHanh}">Mô tả</p>
-								<div th:id="'lab-ui-' + ${lab.maTH}" class="mt-3 bg-surface-container border border-border-subtle rounded p-3"></div>
-								<input type="hidden" th:id="'lab-input-' + ${lab.maTH}" th:value="${lab.trangThaiBanDau}" />
-								<div class="mt-3 flex items-center gap-2">
-									<button type="button"
-											th:attr="data-lab-id=${lab.maTH}"
-											class="lab-check-btn bg-primary-container text-on-primary-container px-3 py-1 rounded text-xs font-semibold">
-										Kiểm tra
-									</button>
-									<span class="text-xs text-text-secondary">Thao tác trên component rồi bấm kiểm tra</span>
-								</div>
-								<div th:id="'lab-result-' + ${lab.maTH}" class="text-xs mt-2"></div>
-							</div>
-						</div>
-					</section>
-
-					<section th:if="${!#lists.isEmpty(quizItems)}" class="space-y-4">
-						<h3 class="text-sm uppercase text-text-secondary tracking-wider">Knowledge Check</h3>
-						<div th:each="q,iter : ${quizItems}" class="bg-surface-container border border-border-subtle rounded-xl p-5">
-							<div class="flex justify-between mb-4">
-								<span class="text-xs text-primary" th:text="'QUESTION ' + ${iter.index + 1} + '/' + ${#lists.size(quizItems)}">QUESTION 1/5</span>
-							</div>
-							<h4 class="font-semibold mb-4" th:text="${q.question.noiDungCauHoi}">Câu hỏi</h4>
-							<div class="space-y-2">
-								<label th:each="a : ${q.answers}" class="flex items-center gap-2 p-3 rounded border border-border-subtle text-sm text-text-secondary cursor-pointer">
-									<input type="radio"
-										   th:name="'q-' + ${q.question.maTN}"
-										   th:value="${a.maDA}"
-										   class="accent-indigo-400"/>
-									<span th:text="${a.noiDungDapAn}">Đáp án</span>
-								</label>
-							</div>
-							<div class="mt-3 flex items-center gap-2">
-								<button type="button"
-										th:attr="data-question-id=${q.question.maTN}"
-										class="quiz-check-btn bg-primary-container text-on-primary-container px-3 py-1 rounded text-xs font-semibold">
-									Kiểm tra đáp án
-								</button>
-							</div>
-							<div th:id="'quiz-result-' + ${q.question.maTN}" class="text-xs mt-3 text-text-secondary"></div>
-						</div>
-					</section>
-				</div>
-
-				<div class="col-span-12 lg:col-span-4 space-y-8">
-					<section class="space-y-4">
-						<h3 class="text-sm uppercase text-text-secondary tracking-wider">Tài nguyên</h3>
-						<div class="bg-surface-container border border-border-subtle rounded-xl overflow-hidden">
-							<a th:each="t : ${taiNguyens}" th:href="${t.linkURL}" target="_blank"
-							   class="flex items-center justify-between p-4 hover:bg-surface-variant border-b border-border-subtle last:border-b-0">
-								<div>
-									<p class="text-sm text-text-primary" th:text="${t.tenTaiNguyen}">Tên tài nguyên</p>
-									<p class="text-xs text-text-secondary" th:text="${t.linkURL}">link</p>
-								</div>
-								<span class="material-symbols-outlined text-text-secondary">open_in_new</span>
-							</a>
-							<div th:if="${#lists.isEmpty(taiNguyens)}" class="p-4 text-sm text-text-secondary">Chưa có tài nguyên.</div>
-						</div>
-					</section>
-
-					<section class="space-y-4">
-						<h3 class="text-sm uppercase text-text-secondary tracking-wider">Bài học cùng danh mục</h3>
-						<div class="space-y-2">
-							<a th:each="n : ${nextLessons}" th:href="@{/baihoc/{id}(id=${n.maBH})}"
-							   class="block bg-surface-container-low border border-border-subtle p-3 rounded hover:bg-surface-variant">
-								<p class="text-sm" th:text="${n.tenBH}">Tên bài học</p>
-							</a>
-						</div>
-					</section>
+		<!-- Interactive Labs -->
+		<section th:if="${!#lists.isEmpty(labs)}" class="bg-surface-card rounded-xl p-lg shadow-card border-l-8 border-primary">
+			<div class="flex justify-between items-center dashed-header pb-sm mb-md gap-sm flex-wrap">
+				<h3 class="font-h3 text-primary flex items-center gap-xs">
+					<span class="material-symbols-outlined text-primary">science</span>
+					Interactive Lab
+				</h3>
+				<span class="bg-primary-bg text-primary px-sm py-xs rounded-full font-xs font-bold uppercase tracking-widest text-xs shrink-0">Live Editor</span>
+			</div>
+			<div class="space-y-lg">
+				<div th:each="lab : ${labs}"
+					 th:attr="data-lab-initial=${lab.trangThaiBanDau},data-lab-expected=${lab.trangThaiDung}"
+					 class="lab-card border border-outline-variant rounded-xl p-md bg-cream/50">
+					<div class="font-h3 text-on-surface text-lg mb-xs" th:text="${lab.tenThucHanh}">Tên lab</div>
+					<p class="text-on-surface-variant text-sm mb-md leading-relaxed" th:text="${lab.moTaThucHanh}">Mô tả</p>
+					<div th:id="'lab-ui-' + ${lab.maTH}" class="bg-surface-card rounded-lg p-md border border-outline-variant/50"></div>
+					<input type="hidden" th:id="'lab-input-' + ${lab.maTH}" th:value="${lab.trangThaiBanDau}"/>
+					<div class="mt-md flex flex-wrap items-center gap-sm">
+						<button type="button"
+								th:attr="data-lab-id=${lab.maTH}"
+								class="lab-check-btn bg-primary text-on-primary font-bold px-lg py-sm rounded-full shadow-lg hover:scale-95 active:scale-90 transition-all glow-teal text-sm">
+							Kiểm tra lab
+						</button>
+						<span class="text-xs text-on-surface-variant">Thao tác trên component rồi bấm kiểm tra.</span>
+					</div>
+					<div th:id="'lab-result-' + ${lab.maTH}" class="text-sm mt-sm text-on-surface-variant"></div>
 				</div>
 			</div>
+		</section>
+
+		<!-- Knowledge Check -->
+		<section th:if="${!#lists.isEmpty(quizItems)}" class="space-y-lg">
+			<div th:each="q, iter : ${quizItems}" class="space-y-md">
+				<div class="flex items-start justify-between gap-sm flex-wrap">
+					<h3 class="font-h3 text-on-surface flex items-center gap-xs">
+						<span class="material-symbols-outlined text-secondary">quiz</span>
+						Knowledge Check
+					</h3>
+					<span class="text-xs font-bold text-primary bg-primary-bg px-sm py-xs rounded-full uppercase tracking-wide"
+						  th:text="'Câu ' + ${iter.index + 1} + '/' + ${#lists.size(quizItems)}">Câu 1/1</span>
+				</div>
+				<p class="font-bold text-on-surface text-lg leading-snug" th:text="${q.question.noiDungCauHoi}">Câu hỏi</p>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+					<label th:each="a, aStat : ${q.answers}" class="relative cursor-pointer group block">
+						<input type="radio"
+							   th:name="|q-${q.question.maTN}|"
+							   th:value="${a.maDA}"
+							   class="peer sr-only"/>
+						<div class="bg-cream p-lg rounded-xl border-2 border-outline-variant peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-primary/20 shadow-card transition-colors hover:border-primary h-full">
+							<div class="flex items-center gap-md">
+								<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold shrink-0"
+									 th:text="${#strings.substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ', aStat.index, aStat.index + 1)}">A</div>
+								<p class="font-bold text-on-surface leading-snug" th:text="${a.noiDungDapAn}">Đáp án</p>
+							</div>
+						</div>
+					</label>
+				</div>
+				<div class="flex flex-wrap items-center gap-sm">
+					<button type="button"
+							th:attr="data-question-id=${q.question.maTN}"
+							class="quiz-check-btn w-full sm:w-auto bg-secondary-container text-on-secondary-container font-bold py-md px-xl rounded-full shadow-lg hover:scale-95 active:scale-90 transition-all glow-gold">
+						Kiểm tra đáp án
+					</button>
+				</div>
+				<div th:id="'quiz-result-' + ${q.question.maTN}" class="text-sm text-on-surface-variant"></div>
+			</div>
+		</section>
+	</div>
+
+	<!-- Sidebar -->
+	<aside class="w-full lg:w-80 space-y-lg shrink-0">
+		<div class="bg-surface-card rounded-xl p-lg shadow-card border-t-8 border-secondary">
+			<h4 class="font-h3 text-on-surface dashed-header pb-xs mb-md">Tài nguyên</h4>
+			<ul class="space-y-sm" th:if="${!#lists.isEmpty(taiNguyens)}">
+				<li th:each="t : ${taiNguyens}">
+					<a th:href="${t.linkURL}" target="_blank" rel="noopener"
+					   class="flex items-center gap-sm p-sm rounded-lg hover:bg-primary-bg transition-colors group">
+						<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">link</span>
+						<span class="font-bold text-on-surface-variant text-sm break-all" th:text="${t.tenTaiNguyen}">Tên</span>
+					</a>
+				</li>
+			</ul>
+			<p class="text-on-surface-variant text-sm" th:if="${#lists.isEmpty(taiNguyens)}">Chưa có tài nguyên.</p>
 		</div>
-	</main>
-</div>
+
+		<div class="bg-primary text-white rounded-xl p-lg shadow-card relative overflow-hidden">
+			<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary-light/20 rounded-full blur-2xl"></div>
+			<h4 class="font-h2 mb-sm relative">Tiến độ</h4>
+			<div class="flex items-center gap-sm mb-lg relative">
+				<span class="font-display text-h1">0%</span>
+				<span class="material-symbols-outlined text-secondary-fixed text-[40px]" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+			</div>
+			<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}"
+			   class="block w-full text-center bg-secondary-container text-on-secondary-container font-bold py-md rounded-full shadow-lg hover:scale-95 active:scale-90 transition-all glow-gold">
+				Về danh sách bài học
+			</a>
+		</div>
+
+		<div class="bg-cream rounded-xl p-md border-2 border-dashed border-outline-variant" th:if="${nextLesson != null}">
+			<p class="font-xs text-outline text-center text-sm">
+				Bài tiếp theo:
+				<a th:href="@{/baihoc/{id}(id=${nextLesson.maBH})}" class="font-bold text-primary hover:underline" th:text="${nextLesson.tenBH}">Typography</a>
+			</p>
+		</div>
+		<div class="bg-surface-card rounded-xl p-md border border-outline-variant/40" th:if="${#lists.isEmpty(quizItems) and #lists.isEmpty(labs)}">
+			<p class="text-xs text-on-surface-variant text-center">Không có lab hay trắc nghiệm cho bài này.</p>
+		</div>
+	</aside>
+</main>
+
+<!-- Mobile bottom nav -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm min-h-[88px] bg-cream border-t-2 border-dashed border-outline-variant shadow-[0_-4px_10px_rgba(0,106,102,0.1)] rounded-t-xl"
+		style="padding-bottom: max(10px, env(safe-area-inset-bottom));">
+	<a href="/" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs">
+		<span class="material-symbols-outlined">home</span>
+		<span class="font-sm text-xs">Home</span>
+	</a>
+	<a th:href="@{/danhmuc/{id}(id=${uiMaDm})}"
+	   th:classappend="${trackTheme == 'ui'} ? ' bg-secondary-container text-on-secondary-container rounded-full px-sm py-xs scale-105 shadow-[0_0_15px_rgba(252,208,61,0.4)]' : ' text-on-surface-variant px-sm py-xs'"
+	   class="flex flex-col items-center justify-center max-w-[24%]">
+		<span class="material-symbols-outlined">palette</span>
+		<span class="font-sm text-xs truncate">UI</span>
+	</a>
+	<a th:href="@{/danhmuc/{id}(id=${uxMaDm})}"
+	   th:classappend="${trackTheme == 'ux'} ? ' bg-secondary-container text-on-secondary-container rounded-full px-sm py-xs scale-105 shadow-[0_0_15px_rgba(252,208,61,0.4)]' : ' text-on-surface-variant px-sm py-xs'"
+	   class="flex flex-col items-center justify-center max-w-[24%]">
+		<span class="material-symbols-outlined">architecture</span>
+		<span class="font-sm text-xs truncate">UX</span>
+	</a>
+	<a th:href="@{/danhmuc/{id}(id=${baiHoc.maDM})}" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs max-w-[24%]">
+		<span class="material-symbols-outlined">menu_book</span>
+		<span class="font-sm text-xs truncate">Bài học</span>
+	</a>
+</footer>
+
 <script>
 	const labAttempts = {};
 
@@ -180,13 +369,13 @@
 		};
 
 		target.innerHTML = `
-			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="text-xs text-on-surface-variant mb-2">Thao tác trực tiếp trên component</div>
 			<div class="flex flex-wrap items-center gap-2">
-				<span class="text-xs text-text-secondary">${keyLabel}:</span>
-				<span id="lab-current-${labId}" class="text-xs px-2 py-1 rounded bg-surface-variant text-text-primary"></span>
-				<div class="inline-flex rounded overflow-hidden border border-border-subtle">
-					<button type="button" id="lab-choice-a-${labId}" class="text-xs px-3 py-1 bg-primary-container text-on-primary-container">${initialValue}</button>
-					<button type="button" id="lab-choice-b-${labId}" class="text-xs px-3 py-1 bg-surface-variant text-text-primary">${expectedValue}</button>
+				<span class="text-xs text-on-surface-variant">${keyLabel}:</span>
+				<span id="lab-current-${labId}" class="text-xs px-2 py-1 rounded bg-surface-container-low text-on-surface"></span>
+				<div class="inline-flex rounded overflow-hidden border border-outline-variant">
+					<button type="button" id="lab-choice-a-${labId}" class="text-xs px-3 py-1 bg-primary text-on-primary">${initialValue}</button>
+					<button type="button" id="lab-choice-b-${labId}" class="text-xs px-3 py-1 bg-surface-container-low text-on-surface">${expectedValue}</button>
 				</div>
 			</div>
 		`;
@@ -196,8 +385,8 @@
 		const btnB = document.getElementById(`lab-choice-b-${labId}`);
 		const applyBtnStyle = () => {
 			const aActive = current === initialValue;
-			btnA.className = `text-xs px-3 py-1 ${aActive ? 'bg-primary-container text-on-primary-container' : 'bg-surface-variant text-text-primary'}`;
-			btnB.className = `text-xs px-3 py-1 ${!aActive ? 'bg-primary-container text-on-primary-container' : 'bg-surface-variant text-text-primary'}`;
+			btnA.className = `text-xs px-3 py-1 ${aActive ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface'}`;
+			btnB.className = `text-xs px-3 py-1 ${!aActive ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface'}`;
 		};
 		btnA.addEventListener('click', () => {
 			current = initialValue;
@@ -220,15 +409,15 @@
 		const values = Array.from(new Set([initialValue, expectedValue, 'fixed', 'fill', 'hug']));
 
 		target.innerHTML = `
-			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="text-xs text-on-surface-variant mb-2">Thao tác trực tiếp trên component</div>
 			<div class="space-y-3">
-				<div class="text-xs text-text-secondary">Mô phỏng Width mode</div>
-				<div class="inline-flex rounded overflow-hidden border border-border-subtle" id="width-group-${labId}">
-					${values.map(v => `<button type="button" data-v="${v}" class="text-xs px-3 py-1 bg-surface-variant text-text-primary">${v}</button>`).join('')}
+				<div class="text-xs text-on-surface-variant">Mô phỏng Width mode</div>
+				<div class="inline-flex rounded overflow-hidden border border-outline-variant" id="width-group-${labId}">
+					${values.map(v => `<button type="button" data-v="${v}" class="text-xs px-3 py-1 bg-surface-container-low text-on-surface">${v}</button>`).join('')}
 				</div>
-				<div class="border border-border-subtle rounded p-3 bg-surface-container">
-					<div class="text-[11px] text-text-secondary mb-2">Preview Button</div>
-					<div id="width-preview-${labId}" class="h-8 rounded bg-primary-container text-on-primary-container flex items-center justify-center text-xs font-semibold">Button</div>
+				<div class="border border-outline-variant rounded p-3 bg-surface-card">
+					<div class="text-[11px] text-on-surface-variant mb-2">Preview Button</div>
+					<div id="width-preview-${labId}" class="h-8 rounded bg-primary text-on-primary flex items-center justify-center text-xs font-semibold">Button</div>
 				</div>
 			</div>
 		`;
@@ -239,7 +428,7 @@
 			hiddenInput.value = `width: ${current}`;
 			group.querySelectorAll('button').forEach((b) => {
 				const active = b.dataset.v === current;
-				b.className = `text-xs px-3 py-1 ${active ? 'bg-primary-container text-on-primary-container' : 'bg-surface-variant text-text-primary'}`;
+				b.className = `text-xs px-3 py-1 ${active ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface'}`;
 			});
 			if (current === 'fill') preview.style.width = '100%';
 			else if (current === 'hug') preview.style.width = '96px';
@@ -261,15 +450,15 @@
 		const expected = Number(expectedValue) || current;
 
 		target.innerHTML = `
-			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="text-xs text-on-surface-variant mb-2">Thao tác trực tiếp trên component</div>
 			<div class="space-y-3">
-				<div class="flex items-center gap-2">
-					<label class="text-xs text-text-secondary">Số cột:</label>
-					<input id="columns-slider-${labId}" type="range" min="1" max="12" step="1" class="w-48" value="${current}">
-					<span id="columns-value-${labId}" class="text-xs px-2 py-1 rounded bg-surface-variant">${current}</span>
+				<div class="flex items-center gap-2 flex-wrap">
+					<label class="text-xs text-on-surface-variant">Số cột:</label>
+					<input id="columns-slider-${labId}" type="range" min="1" max="12" step="1" class="w-48 accent-primary" value="${current}">
+					<span id="columns-value-${labId}" class="text-xs px-2 py-1 rounded bg-surface-container-low text-on-surface">${current}</span>
 				</div>
 				<div id="columns-preview-${labId}" class="grid gap-1"></div>
-				<div class="text-[11px] text-text-secondary">Mục tiêu: ${expected} cột</div>
+				<div class="text-[11px] text-on-surface-variant">Mục tiêu: ${expected} cột</div>
 			</div>
 		`;
 
@@ -283,7 +472,7 @@
 			preview.style.gridTemplateColumns = `repeat(${current}, minmax(0,1fr))`;
 			for (let i = 0; i < current; i++) {
 				const cell = document.createElement('div');
-				cell.className = 'h-3 rounded bg-primary-container/60';
+				cell.className = 'h-3 rounded bg-primary/50';
 				preview.appendChild(cell);
 			}
 		};
@@ -299,13 +488,13 @@
 		const hiddenInput = document.getElementById(`lab-input-${labId}`);
 		let current = initialValue;
 		target.innerHTML = `
-			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="text-xs text-on-surface-variant mb-2">Thao tác trực tiếp trên component</div>
 			<div class="space-y-3">
 				<div class="flex flex-wrap gap-2">
-					<button type="button" id="order-random-${labId}" class="text-xs px-3 py-1 rounded bg-surface-variant">Xáo trộn bước</button>
-					<button type="button" id="order-correct-${labId}" class="text-xs px-3 py-1 rounded bg-primary-container text-on-primary-container">Sắp xếp đúng</button>
+					<button type="button" id="order-random-${labId}" class="text-xs px-3 py-1 rounded bg-surface-container-low text-on-surface border border-outline-variant">Xáo trộn bước</button>
+					<button type="button" id="order-correct-${labId}" class="text-xs px-3 py-1 rounded bg-primary text-on-primary">Sắp xếp đúng</button>
 				</div>
-				<div id="order-status-${labId}" class="text-xs px-2 py-1 rounded bg-surface-variant inline-block"></div>
+				<div id="order-status-${labId}" class="text-xs px-2 py-1 rounded bg-surface-container-low inline-block text-on-surface"></div>
 			</div>
 		`;
 		const status = document.getElementById(`order-status-${labId}`);
@@ -335,20 +524,19 @@
 			const id = `lab-field-${labId}-${key}`;
 			const options = Array.from(new Set([initVal, expectedVal].map(v => v === null ? 'null' : String(v))));
 			const optionsHtml = options.map(v => `<option value="${v}">${v}</option>`).join('');
-			const selected = initVal === null ? 'null' : String(initVal);
 			return `
 				<div class="space-y-1">
-					<label for="${id}" class="text-xs text-text-secondary">${key}</label>
-					<select id="${id}" data-json-key="${key}" class="w-full bg-surface-variant border border-border-subtle rounded p-2 text-sm">
+					<label for="${id}" class="text-xs text-on-surface-variant">${key}</label>
+					<select id="${id}" data-json-key="${key}" class="w-full bg-surface-card border border-outline-variant rounded p-2 text-sm text-on-surface">
 						${optionsHtml}
 					</select>
-					<div class="text-[11px] text-text-secondary">Mục tiêu: ${expectedVal === null ? 'null' : String(expectedVal)}</div>
+					<div class="text-[11px] text-on-surface-variant">Mục tiêu: ${expectedVal === null ? 'null' : String(expectedVal)}</div>
 				</div>
 			`;
 		}).join('');
 
 		target.innerHTML = `
-			<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
+			<div class="text-xs text-on-surface-variant mb-2">Thao tác trực tiếp trên component</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${controls}</div>
 		`;
 
@@ -410,15 +598,14 @@
 				return;
 			}
 
-			// Fallback: one-click switch between start and expected state.
 			const target = document.getElementById(`lab-ui-${labId}`);
 			const hiddenInput = document.getElementById(`lab-input-${labId}`);
 			let current = initialRaw;
 			target.innerHTML = `
-				<div class="text-xs text-text-secondary mb-2">Thao tác trực tiếp trên component</div>
-				<div class="flex items-center gap-2">
-					<span id="lab-current-${labId}" class="text-xs px-2 py-1 rounded bg-surface-variant text-text-primary"></span>
-					<button type="button" id="lab-toggle-${labId}" class="text-xs px-3 py-1 rounded bg-primary-container text-on-primary-container">Đổi trạng thái</button>
+				<div class="text-xs text-on-surface-variant mb-2">Thao tác trực tiếp trên component</div>
+				<div class="flex items-center gap-2 flex-wrap">
+					<span id="lab-current-${labId}" class="text-xs px-2 py-1 rounded bg-surface-container-low text-on-surface"></span>
+					<button type="button" id="lab-toggle-${labId}" class="text-xs px-3 py-1 rounded bg-primary text-on-primary font-semibold">Đổi trạng thái</button>
 				</div>
 			`;
 			const currentSpan = document.getElementById(`lab-current-${labId}`);
@@ -439,7 +626,7 @@
 		const selected = document.querySelector(`input[name="q-${questionId}"]:checked`);
 		const resultEl = document.getElementById(`quiz-result-${questionId}`);
 		if (!selected) {
-			resultEl.innerHTML = '<span class="text-yellow-400">Vui lòng chọn một đáp án.</span>';
+			resultEl.innerHTML = '<span class="text-secondary font-medium">Vui lòng chọn một đáp án.</span>';
 			return;
 		}
 
@@ -450,14 +637,15 @@
 		});
 		const data = await res.json();
 		if (!data.ok) {
-			resultEl.innerHTML = '<span class="text-red-400">Lỗi kiểm tra đáp án.</span>';
+			resultEl.innerHTML = '<span class="text-error font-medium">Lỗi kiểm tra đáp án.</span>';
 			return;
 		}
 
 		if (data.correct) {
-			resultEl.innerHTML = '<span class="text-green-400">Chính xác!</span>';
+			resultEl.innerHTML = '<span class="text-success font-semibold">Chính xác!</span>';
 		} else {
-			resultEl.innerHTML = `<span class="text-red-400">Sai.</span> <span class="text-text-secondary">Giải thích: ${data.explanation || ''}</span>`;
+			const ex = (data.explanation || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			resultEl.innerHTML = `<span class="text-error font-semibold">Sai.</span> <span class="text-on-surface-variant">Giải thích: ${ex}</span>`;
 		}
 	}
 
@@ -475,18 +663,19 @@
 		});
 		const data = await res.json();
 		if (!data.ok) {
-			resultEl.innerHTML = '<span class="text-red-400">Lỗi kiểm tra lab.</span>';
+			resultEl.innerHTML = '<span class="text-error font-medium">Lỗi kiểm tra lab.</span>';
 			return;
 		}
 
 		if (data.correct) {
-			resultEl.innerHTML = '<span class="text-green-400">Thao tác đúng! JSON trạng thái khớp với trạng thái đúng trong CSDL.</span>';
+			resultEl.innerHTML = '<span class="text-success font-semibold">Thao tác đúng! Trạng thái khớp với CSDL.</span>';
 		} else {
 			let hintText = '';
 			if (labAttempts[labId] >= 3 && data.hint) {
-				hintText = ` <span class="text-yellow-400">Gợi ý: ${data.hint}</span>`;
+				const h = String(data.hint).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+				hintText = ` <span class="text-secondary font-medium">Gợi ý: ${h}</span>`;
 			}
-			resultEl.innerHTML = `<span class="text-red-400">Chưa đúng.</span>${hintText}`;
+			resultEl.innerHTML = `<span class="text-error font-semibold">Chưa đúng.</span>${hintText}`;
 		}
 	}
 
@@ -500,4 +689,3 @@
 </script>
 </body>
 </html>
-

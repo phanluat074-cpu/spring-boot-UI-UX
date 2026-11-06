@@ -8,17 +8,39 @@
 </head>
 <body>
 <div class="container py-4">
+	<div th:replace="~{admin/fragments :: adminToolbar}"></div>
 	<div class="d-flex justify-content-between align-items-center mb-3">
 		<h1 class="h4 mb-0">Quản lý Danh mục</h1>
-		<a href="/admin" class="btn btn-outline-secondary">Menu Admin</a>
 	</div>
-	<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+	<form method="get" class="row g-2 align-items-end mb-3">
+		<input type="hidden" name="editId" th:value="${param.editId}">
+		<div class="col-md-6">
+			<label class="form-label small mb-0">Tìm kiếm</label>
+			<input class="form-control" name="q" th:value="${searchQ}" placeholder="Tên danh mục, URL icon…">
+		</div>
+		<div class="col-md-2">
+			<label class="form-label small mb-0">Số dòng / trang</label>
+			<select class="form-select" name="size">
+				<option value="10" th:selected="${pageSize == 10}">10</option>
+				<option value="20" th:selected="${pageSize == 20}">20</option>
+				<option value="50" th:selected="${pageSize == 50}">50</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<button type="submit" class="btn btn-primary w-100">Áp dụng</button>
+		</div>
+		<div class="col-md-2">
+			<a th:href="@{/admin/danhmuc}" class="btn btn-outline-secondary w-100">Xóa bộ lọc</a>
+		</div>
+		<input type="hidden" name="page" value="0">
+	</form>
+	<div th:if="${error}" class="alert alert-danger" th:utext="${error}"></div>
 	<div class="row g-4">
 		<div class="col-lg-4">
 			<div class="card">
 				<div class="card-body">
 					<h2 class="h6">Thêm / Sửa</h2>
-					<form method="post" action="/admin/danhmuc/save">
+					<form id="formDanhMuc" method="post" action="/admin/danhmuc/save" novalidate>
 						<input type="hidden" name="maDM" th:value="${form.maDM}">
 						<div class="mb-2">
 							<label class="form-label">Tên danh mục</label>
@@ -28,14 +50,15 @@
 							<label class="form-label">Icon URL</label>
 							<input class="form-control" name="iconURL" th:value="${form.iconURL}">
 						</div>
-						<button class="btn btn-primary">Lưu</button>
-						<a href="/admin/danhmuc" class="btn btn-light">Mới</a>
+					<button class="btn btn-primary">Lưu</button>
+					<a th:href="@{/admin/danhmuc(q=${searchQ},page=${resultPage.number},size=${pageSize})}" class="btn btn-light">Mới</a>
 					</form>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-8">
-			<table class="table table-bordered table-hover">
+			<p class="text-muted small" th:if="${resultPage.totalElements == 0}">Không có bản ghi khớp tìm kiếm.</p>
+			<table class="table table-bordered table-hover" th:if="${resultPage.totalElements > 0}">
 				<thead>
 				<tr><th>MaDM</th><th>Tên</th><th>Icon</th><th></th></tr>
 				</thead>
@@ -45,7 +68,7 @@
 					<td th:text="${i.tenDanhMuc}"></td>
 					<td class="text-break" th:text="${i.iconURL}"></td>
 					<td class="text-nowrap">
-						<a class="btn btn-sm btn-warning" th:href="@{/admin/danhmuc(editId=${i.maDM})}">Sửa</a>
+						<a class="btn btn-sm btn-warning" th:href="@{/admin/danhmuc(editId=${i.maDM},q=${searchQ},page=${resultPage.number},size=${resultPage.size})}">Sửa</a>
 						<form th:action="@{/admin/danhmuc/{id}/delete(id=${i.maDM})}" method="post" class="d-inline">
 							<button class="btn btn-sm btn-danger" onclick="return confirm('Xóa danh mục này?')">Xóa</button>
 						</form>
@@ -53,9 +76,34 @@
 				</tr>
 				</tbody>
 			</table>
+			<nav class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2" th:if="${resultPage.totalPages > 1}">
+				<small class="text-muted">Trang <span th:text="${resultPage.number + 1}"></span> / <span th:text="${resultPage.totalPages}"></span></small>
+				<div class="btn-group">
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}"
+					   th:href="@{/admin/danhmuc(q=${searchQ},page=0,size=${resultPage.size},editId=${param.editId})}">Đầu</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}"
+					   th:href="@{/admin/danhmuc(q=${searchQ},page=${resultPage.number - 1},size=${resultPage.size},editId=${param.editId})}">Trước</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}"
+					   th:href="@{/admin/danhmuc(q=${searchQ},page=${resultPage.number + 1},size=${resultPage.size},editId=${param.editId})}">Sau</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}"
+					   th:href="@{/admin/danhmuc(q=${searchQ},page=${resultPage.totalPages - 1},size=${resultPage.size},editId=${param.editId})}">Cuối</a>
+				</div>
+			</nav>
 		</div>
 	</div>
 </div>
+<script src="/js/admin-validation.js"></script>
+<script>
+	AdminValidation.attachValidation('#formDanhMuc', [
+		{ name: 'tenDanhMuc', rules: [
+			{ type: 'required', message: 'Tên danh mục không được để trống.' },
+			{ type: 'maxLength', max: 200, message: 'Tên danh mục không được vượt quá 200 ký tự.' }
+		]},
+		{ name: 'iconURL', rules: [
+			{ type: 'maxLength', max: 500, message: 'Icon URL không được vượt quá 500 ký tự.' },
+			{ type: 'url', message: 'Icon URL phải bắt đầu bằng http:// hoặc https://.' }
+		]}
+	]);
+</script>
 </body>
 </html>
-

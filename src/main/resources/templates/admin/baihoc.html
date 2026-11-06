@@ -8,16 +8,45 @@
 </head>
 <body>
 <div class="container py-4">
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h1 class="h4 mb-0">Quản lý Bài học</h1>
-		<a href="/admin" class="btn btn-outline-secondary">Menu Admin</a>
-	</div>
-	<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+	<div th:replace="~{admin/fragments :: adminToolbar}"></div>
+	<h1 class="h4 mb-3">Quản lý Bài học</h1>
+	<div th:if="${error}" class="alert alert-danger" th:utext="${error}"></div>
+	<form method="get" class="row g-2 align-items-end mb-3">
+		<input type="hidden" name="editId" th:value="${param.editId}">
+		<div class="col-md-4">
+			<label class="form-label small mb-0">Tìm kiếm (tên, nội dung, link)</label>
+			<input class="form-control" name="q" th:value="${searchQ}" placeholder="Nhập từ khóa…">
+		</div>
+		<div class="col-md-3">
+			<label class="form-label small mb-0">Lọc theo danh mục</label>
+			<select class="form-select" name="maDM">
+				<option value="" th:selected="${filterMaDM == null}">Tất cả</option>
+				<option th:each="dm : ${danhMucs}" th:value="${dm.maDM}"
+						th:selected="${filterMaDM != null and filterMaDM == dm.maDM}"
+						th:text="${dm.tenDanhMuc}"></option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label small mb-0">/ trang</label>
+			<select class="form-select" name="size">
+				<option value="10" th:selected="${pageSize == 10}">10</option>
+				<option value="20" th:selected="${pageSize == 20}">20</option>
+				<option value="50" th:selected="${pageSize == 50}">50</option>
+			</select>
+		</div>
+		<div class="col-md-1">
+			<button type="submit" class="btn btn-primary w-100">Lọc</button>
+		</div>
+		<div class="col-md-2">
+			<a th:href="@{/admin/baihoc}" class="btn btn-outline-secondary w-100">Xóa bộ lọc</a>
+		</div>
+		<input type="hidden" name="page" value="0">
+	</form>
 	<div class="row g-4">
 		<div class="col-lg-4">
 			<div class="card"><div class="card-body">
 				<h2 class="h6">Thêm / Sửa</h2>
-				<form method="post" action="/admin/baihoc/save">
+				<form id="formBaiHoc" method="post" action="/admin/baihoc/save" novalidate>
 					<input type="hidden" name="maBH" th:value="${form.maBH}">
 					<div class="mb-2"><label class="form-label">Tên bài học</label><input class="form-control" name="tenBH" th:value="${form.tenBH}" required></div>
 					<div class="mb-2"><label class="form-label">Nội dung</label><textarea class="form-control" name="noiDungBH" rows="3" required th:text="${form.noiDungBH}"></textarea></div>
@@ -31,12 +60,13 @@
 						</select>
 					</div>
 					<button class="btn btn-primary">Lưu</button>
-					<a href="/admin/baihoc" class="btn btn-light">Mới</a>
+					<a th:href="@{/admin/baihoc(q=${searchQ},maDM=${filterMaDM},page=${resultPage.number},size=${pageSize})}" class="btn btn-light">Mới</a>
 				</form>
 			</div></div>
 		</div>
 		<div class="col-lg-8">
-			<table class="table table-bordered table-hover">
+			<p class="text-muted small" th:if="${resultPage.totalElements == 0}">Không có bản ghi khớp bộ lọc.</p>
+			<table class="table table-bordered table-hover" th:if="${resultPage.totalElements > 0}">
 				<thead><tr><th>MaBH</th><th>Tên</th><th>MaDM</th><th></th></tr></thead>
 				<tbody>
 				<tr th:each="i : ${items}">
@@ -44,7 +74,7 @@
 					<td th:text="${i.tenBH}"></td>
 					<td th:text="${i.maDM}"></td>
 					<td class="text-nowrap">
-						<a class="btn btn-sm btn-warning" th:href="@{/admin/baihoc(editId=${i.maBH})}">Sửa</a>
+						<a class="btn btn-sm btn-warning" th:href="@{/admin/baihoc(editId=${i.maBH},q=${searchQ},maDM=${filterMaDM},page=${resultPage.number},size=${pageSize})}">Sửa</a>
 						<form th:action="@{/admin/baihoc/{id}/delete(id=${i.maBH})}" method="post" class="d-inline">
 							<button class="btn btn-sm btn-danger" onclick="return confirm('Xóa bài học này?')">Xóa</button>
 						</form>
@@ -52,9 +82,42 @@
 				</tr>
 				</tbody>
 			</table>
+			<nav class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2" th:if="${resultPage.totalPages > 1}">
+				<small class="text-muted">Trang <span th:text="${resultPage.number + 1}"></span> / <span th:text="${resultPage.totalPages}"></span></small>
+				<div class="btn-group">
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}"
+					   th:href="@{/admin/baihoc(q=${searchQ},maDM=${filterMaDM},page=0,size=${resultPage.size},editId=${param.editId})}">Đầu</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}"
+					   th:href="@{/admin/baihoc(q=${searchQ},maDM=${filterMaDM},page=${resultPage.number - 1},size=${resultPage.size},editId=${param.editId})}">Trước</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}"
+					   th:href="@{/admin/baihoc(q=${searchQ},maDM=${filterMaDM},page=${resultPage.number + 1},size=${resultPage.size},editId=${param.editId})}">Sau</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}"
+					   th:href="@{/admin/baihoc(q=${searchQ},maDM=${filterMaDM},page=${resultPage.totalPages - 1},size=${resultPage.size},editId=${param.editId})}">Cuối</a>
+				</div>
+			</nav>
 		</div>
 	</div>
 </div>
+<script src="/js/admin-validation.js"></script>
+<script>
+	AdminValidation.attachValidation('#formBaiHoc', [
+		{ name: 'tenBH', rules: [
+			{ type: 'required', message: 'Tên bài học không được để trống.' },
+			{ type: 'maxLength', max: 200, message: 'Tên bài học không được vượt quá 200 ký tự.' }
+		]},
+		{ name: 'noiDungBH', rules: [
+			{ type: 'required', message: 'Nội dung bài học không được để trống.' }
+		]},
+		{ name: 'linkURL', rules: [
+			{ type: 'url', message: 'Link URL phải bắt đầu bằng http:// hoặc https://.' }
+		]},
+		{ name: 'hinhAnh', rules: [
+			{ type: 'url', message: 'Hình ảnh URL phải bắt đầu bằng http:// hoặc https://.' }
+		]},
+		{ name: 'maDM', rules: [
+			{ type: 'select', message: 'Vui lòng chọn danh mục.' }
+		]}
+	]);
+</script>
 </body>
 </html>
-

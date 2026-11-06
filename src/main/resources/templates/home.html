@@ -1,182 +1,508 @@
 <!DOCTYPE html>
-<html class="dark" lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html class="light" lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="utf-8">
-	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+	<title>UI/UX LABS — Master the Art of Design</title>
 	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-	<style>
-		.material-symbols-outlined {
-			font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-		}
-		body {
-			background-color: #101014;
-			color: #F1F1F4;
-			-webkit-font-smoothing: antialiased;
-		}
-		.custom-scrollbar::-webkit-scrollbar {
-			width: 4px;
-		}
-		.custom-scrollbar::-webkit-scrollbar-track {
-			background: #121319;
-		}
-		.custom-scrollbar::-webkit-scrollbar-thumb {
-			background: #2C2C3A;
-			border-radius: 10px;
-		}
-	</style>
+	<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;800&amp;family=Plus+Jakarta+Sans:wght@500;700&amp;display=swap" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 	<script id="tailwind-config">
 		tailwind.config = {
 			darkMode: "class",
 			theme: {
 				extend: {
-					colors: {
-						"text-secondary": "#8A8F98",
-						"text-primary": "#F1F1F4",
-						"accent-glow": "rgba(94, 106, 210, 0.15)",
-						"neutral-card": "#1B1B25",
-						"surface-container-lowest": "#0d0e14",
-						"surface-container-low": "#1b1b22",
-						"surface-container": "#1f1f26",
-						"surface-container-high": "#292930",
-						"surface-container-highest": "#34343b",
-						"surface": "#121319",
-						"background": "#121319",
-						"background-app": "#101014",
-						"border-subtle": "#2C2C3A",
-						"primary": "#bdc2ff",
-						"primary-container": "#5e6ad2",
-						"primary-hover": "#4E5BBF",
-						"on-primary-container": "#fdfaff"
+					"colors": {
+						"primary-light": "#3CC4BD",
+						"primary": "#006a66",
+						"accent-gold": "#FFD23F",
+						"surface-dim": "#d6dbda",
+						"tertiary-fixed": "#ffdbcd",
+						"on-tertiary-container": "#581d00",
+						"on-primary": "#ffffff",
+						"primary-bg": "#E8F6F5",
+						"on-surface": "#171d1c",
+						"on-secondary-container": "#705900",
+						"coral": "#EF6C4A",
+						"surface-container-lowest": "#ffffff",
+						"surface-container-high": "#e4e9e8",
+						"accent-dark": "#E6B800",
+						"surface-container-highest": "#dee4e2",
+						"primary-fixed-dim": "#67d8d1",
+						"secondary-fixed": "#ffe089",
+						"error-container": "#ffdad6",
+						"on-background": "#171d1c",
+						"surface": "#f5faf9",
+						"on-secondary-fixed-variant": "#574500",
+						"surface-base": "#EFF8F7",
+						"outline-variant": "#bcc9c7",
+						"success": "#27AE60",
+						"coral-light": "#FF8A6A",
+						"cream": "#FFF8E7",
+						"surface-container": "#eaefed",
+						"primary-fixed": "#85f5ee",
+						"on-tertiary-fixed-variant": "#773210",
+						"sky-blue": "#5DADE2",
+						"on-surface-variant": "#3d4948",
+						"accent-light": "#FFE47A",
+						"on-primary-fixed-variant": "#00504d",
+						"coral-dark": "#D45233",
+						"on-secondary-fixed": "#241a00",
+						"on-secondary": "#ffffff",
+						"secondary-container": "#fcd03d",
+						"surface-bright": "#f5faf9",
+						"surface-card": "#FFFFFF",
+						"on-tertiary": "#ffffff",
+						"surface-variant": "#dee4e2",
+						"on-primary-container": "#003634",
+						"on-tertiary-fixed": "#360f00",
+						"inverse-on-surface": "#edf2f0",
+						"tertiary-container": "#db8058",
+						"inverse-surface": "#2c3131",
+						"on-error": "#ffffff",
+						"outline": "#6d7a78",
+						"primary-dark": "#1E8C86",
+						"tertiary": "#954925",
+						"on-primary-fixed": "#00201e",
+						"background": "#f5faf9",
+						"on-error-container": "#93000a",
+						"error": "#E74C3C",
+						"secondary-fixed-dim": "#edc22e",
+						"surface-container-low": "#f0f5f3",
+						"primary-container": "#2ba8a2",
+						"tertiary-fixed-dim": "#ffb597",
+						"secondary": "#745c00",
+						"surface-tint": "#006a66",
+						"inverse-primary": "#67d8d1"
 					},
-					borderRadius: {
-						DEFAULT: "0.25rem",
-						lg: "0.5rem",
-						xl: "0.75rem",
-						full: "9999px"
+					"borderRadius": {
+						"DEFAULT": "0.25rem",
+						"lg": "16rpx",
+						"xl": "24rpx",
+						"full": "9999px"
 					},
-					spacing: {
-						gutter: "16px",
-						xl: "24px",
-						xs: "2px",
-						base: "4px",
-						"row-height-compact": "28px",
-						md: "12px",
-						sm: "8px",
-						xxl: "32px",
-						lg: "16px",
-						"row-height-default": "36px"
+					"spacing": {
+						"xs": "8rpx",
+						"sm": "16rpx",
+						"md": "24rpx",
+						"base": "8rpx",
+						"xl": "48rpx",
+						"lg": "32rpx"
 					},
-					fontFamily: {
-						"issue-title": ["Inter"],
-						"body-default": ["Inter"],
-						"h5-panel-title": ["Inter"],
-						"shortcut-hint": ["JetBrains Mono"],
-						metadata: ["Inter"],
-						"h3-page-title": ["Inter"],
-						"nav-item": ["Inter"],
-						"h2-settings": ["Inter"],
-						"h1-landing": ["Inter"],
-						"h4-view-title": ["Inter"],
-						"group-header": ["Inter"]
+					"fontFamily": {
+						"xs": ["Plus Jakarta Sans"],
+						"sm": ["Plus Jakarta Sans"],
+						"display": ["Be Vietnam Pro"],
+						"h3": ["Plus Jakarta Sans"],
+						"body": ["Plus Jakarta Sans"],
+						"h1": ["Be Vietnam Pro"],
+						"h2": ["Be Vietnam Pro"]
 					},
-					fontSize: {
-						"issue-title": ["14px", { lineHeight: "1.4", fontWeight: "500" }],
-						"body-default": ["14px", { lineHeight: "1.5", fontWeight: "400" }],
-						"h5-panel-title": ["16px", { lineHeight: "1.4", fontWeight: "600" }],
-						"shortcut-hint": ["11px", { lineHeight: "20px", fontWeight: "500" }],
-						metadata: ["12px", { lineHeight: "1.2", fontWeight: "500" }],
-						"h3-page-title": ["24px", { lineHeight: "1.2", letterSpacing: "-0.03em", fontWeight: "600" }],
-						"nav-item": ["13px", { lineHeight: "1.4", fontWeight: "500" }],
-						"h2-settings": ["32px", { lineHeight: "1.2", letterSpacing: "-0.03em", fontWeight: "600" }],
-						"h1-landing": ["40px", { lineHeight: "1.2", letterSpacing: "-0.03em", fontWeight: "600" }],
-						"h4-view-title": ["20px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" }],
-						"group-header": ["11px", { lineHeight: "1.2", letterSpacing: "0.05em", fontWeight: "600" }]
+					"fontSize": {
+						"xs": ["20rpx", {"fontWeight": "500"}],
+						"sm": ["24rpx", {"fontWeight": "500"}],
+						"display": ["72rpx", {"letterSpacing": "6rpx", "fontWeight": "800"}],
+						"h3": ["32rpx", {"fontWeight": "700"}],
+						"body": ["28rpx", {"fontWeight": "500"}],
+						"h1": ["48rpx", {"letterSpacing": "4rpx", "fontWeight": "800"}],
+						"h2": ["36rpx", {"letterSpacing": "4rpx", "fontWeight": "800"}]
 					}
 				},
 			},
 		}
 	</script>
-	<title>Open Learning • UI/UX</title>
+	<style>
+		.shadow-card { box-shadow: 0 8px 30px rgba(0, 106, 102, 0.1); }
+		.shadow-focus { box-shadow: 0 0 0 4px rgba(0, 106, 102, 0.15); }
+		.glow-gold { filter: drop-shadow(0 0 15px rgba(252, 208, 61, 0.4)); }
+		.ribbon-banner {
+			position: relative;
+			background: #FFF8E7;
+			padding: 12px 48px;
+			transform: rotate(-3deg);
+			z-index: 10;
+		}
+		.ribbon-banner::before, .ribbon-banner::after {
+			content: "";
+			position: absolute;
+			top: 10px;
+			width: 40px;
+			height: 100%;
+			background: #EED7B5;
+			z-index: -1;
+		}
+		.ribbon-banner::before { left: -30px; transform: skewY(15deg); }
+		.ribbon-banner::after { right: -30px; transform: skewY(-15deg); }
+		.card-fan-container { position: relative; height: 400px; width: 100%; }
+		.fan-card {
+			position: absolute;
+			width: 140px;
+			height: 200px;
+			background: white;
+			border-radius: 12px;
+			border: 2px solid #eaefed;
+			left: 50%;
+			margin-left: -70px;
+			box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+			transition: all 0.3s ease;
+		}
+		.active-glow:hover { box-shadow: 0 0 25px rgba(255, 210, 63, 0.6); transform: scale(1.02); }
+		.btn-bounce:active { transform: scale(0.95); transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+		.pb-safe-nav { padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px)); }
+
+		/* ── Scroll-triggered Animations ─────────────────────── */
+		@keyframes fadeInUp {
+			from { opacity: 0; transform: translateY(40px); }
+			to   { opacity: 1; transform: translateY(0); }
+		}
+		@keyframes fadeInLeft {
+			from { opacity: 0; transform: translateX(-40px); }
+			to   { opacity: 1; transform: translateX(0); }
+		}
+		@keyframes fadeInRight {
+			from { opacity: 0; transform: translateX(40px); }
+			to   { opacity: 1; transform: translateX(0); }
+		}
+		@keyframes scaleIn {
+			from { opacity: 0; transform: scale(0.9); }
+			to   { opacity: 1; transform: scale(1); }
+		}
+		@keyframes floatY {
+			0%, 100% { transform: translateY(0); }
+			50%      { transform: translateY(-12px); }
+		}
+		@keyframes shimmer {
+			0%   { background-position: -200% 0; }
+			100% { background-position: 200% 0; }
+		}
+		.anim-fade-up, .anim-fade-left, .anim-fade-right, .anim-scale-in {
+			opacity: 0;
+		}
+		.anim-fade-up.is-visible    { animation: fadeInUp   0.7s cubic-bezier(.22,1,.36,1) forwards; }
+		.anim-fade-left.is-visible  { animation: fadeInLeft  0.7s cubic-bezier(.22,1,.36,1) forwards; }
+		.anim-fade-right.is-visible { animation: fadeInRight 0.7s cubic-bezier(.22,1,.36,1) forwards; }
+		.anim-scale-in.is-visible   { animation: scaleIn    0.6s cubic-bezier(.22,1,.36,1) forwards; }
+		.anim-delay-1 { animation-delay: 0.15s !important; }
+		.anim-delay-2 { animation-delay: 0.3s !important; }
+		.anim-delay-3 { animation-delay: 0.45s !important; }
+		.anim-float { animation: floatY 3s ease-in-out infinite; }
+
+		/* ── Enhanced Card Borders ───────────────────────────── */
+		.card-bordered {
+			border: 2px solid #dee4e2;
+			border-radius: 16px;
+			transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+		}
+		.card-bordered:hover {
+			border-color: #3CC4BD;
+			box-shadow: 0 12px 40px rgba(0, 106, 102, 0.15);
+			transform: translateY(-4px);
+		}
+		.section-divider {
+			width: 80px;
+			height: 4px;
+			background: linear-gradient(90deg, #006a66, #3CC4BD);
+			border-radius: 2px;
+			margin: 0 auto 2rem;
+		}
+	</style>
 </head>
-<body class="bg-background-app text-text-primary font-body-default text-body-default overflow-x-hidden">
-<!-- TopNavBar -->
-<nav class="bg-background fixed top-0 w-full flex justify-between items-center px-lg h-row-height-default border-b border-border-subtle z-50">
-	<div class="flex items-center gap-xl">
-		<span class="font-h3-page-title text-h3-page-title text-primary tracking-tighter">OpenLearning</span>
-	</div>
-	<div class="flex items-center gap-md">
-		<a href="/admin" class="text-nav-item text-text-secondary hover:text-primary transition-colors">Admin</a>
-		<button class="bg-primary-container text-on-primary-container px-md h-[28px] rounded font-nav-item text-nav-item hover:bg-primary-hover active:scale-95 transition-all">Get Started</button>
-	</div>
-</nav>
-
-<!-- Main Content Canvas -->
-<main class="pt-[36px] min-h-screen">
-	<!-- Hero Section -->
-	<section class="relative h-[400px] flex items-center justify-center overflow-hidden">
-		<div class="absolute inset-0 bg-gradient-to-br from-background-app via-background to-surface-container-low"></div>
-		<div class="relative z-10 text-center px-lg max-w-3xl">
-			<h1 class="font-h1-landing text-h1-landing text-text-primary mb-lg tracking-tight">Master UI/UX with Precision</h1>
-			<p class="text-h4-view-title font-h4-view-title text-text-secondary mb-xxl max-w-2xl mx-auto">
-				Deep-dive into engineering-grade design systems and user experience patterns.
-			</p>
-			<div class="flex justify-center">
-				<button class="h-row-height-default px-xl bg-primary-container text-on-primary-container rounded-lg font-h5-panel-title text-h5-panel-title hover:shadow-[0_0_20px_rgba(94,106,210,0.4)] transition-all">Start Learning</button>
-			</div>
+<body class="bg-background text-on-surface font-body selection:bg-accent-gold/30 pb-safe-nav md:pb-0">
+<!-- Top Navigation Bar -->
+<header class="bg-background dark:bg-on-background fixed top-0 w-full z-50 shadow-card">
+	<div class="flex justify-between items-center w-full px-md py-xs max-w-7xl mx-auto">
+		<div class="flex items-center gap-sm">
+			<a href="/" class="font-display text-h1 text-primary dark:text-primary-fixed italic tracking-tight">UI/UX LABS</a>
 		</div>
-	</section>
-
-	<!-- Specialization Tracks (DANHMUC from SQL Server) -->
-	<section class="px-xxl py-xxl bg-background-app" id="tracks">
-		<div class="max-w-6xl mx-auto">
-			<div class="mb-xl text-center">
-				<span class="font-group-header text-group-header text-primary uppercase block mb-base">Core Curriculum</span>
-				<h2 class="font-h3-page-title text-h3-page-title">Specialization Tracks</h2>
+		<nav class="hidden md:flex gap-lg items-center">
+			<a class="text-primary dark:text-primary-fixed-dim font-bold hover:scale-95 transition-transform duration-200" href="/">Home</a>
+			<a class="text-on-surface-variant dark:text-outline-variant hover:scale-95 transition-transform duration-200" href="#tracks">Curriculum</a>
+			<a class="text-on-surface-variant dark:text-outline-variant hover:scale-95 transition-transform duration-200" href="#mentors">Mentors</a>
+			<a class="text-on-surface-variant dark:text-outline-variant hover:scale-95 transition-transform duration-200" href="#cta">Rewards</a>
+			<a class="text-primary font-bold hover:scale-95 transition-transform duration-200 border-l border-outline-variant pl-lg ml-sm" href="/admin">Admin</a>
+		</nav>
+		<div class="flex items-center gap-md">
+			<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-95 transition-transform hidden sm:inline" aria-hidden="true">emoji_events</span>
+			<a href="/admin" class="material-symbols-outlined text-primary cursor-pointer hover:scale-95 transition-transform md:hidden" title="Admin" aria-label="Admin">account_circle</a>
+			<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-95 transition-transform hidden md:inline" aria-hidden="true">account_circle</span>
+		</div>
+	</div>
+</header>
+<main class="pt-[100px]">
+	<!-- Hero Section -->
+	<section class="relative overflow-hidden px-md py-20 md:py-28">
+		<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center">
+			<div class="relative z-10 space-y-8 anim-fade-left">
+				<div class="inline-block px-sm py-xs bg-secondary-container text-on-secondary-container font-bold rounded-full text-xs uppercase tracking-wider">
+					Enrollment Open • Fall 2024
+				</div>
+				<h1 class="font-h1 text-[64rpx] leading-tight text-primary-dark">
+					Master the Art of <br/>
+					<span class="text-primary">UI/UX</span> with a <br/>
+					<span class="italic text-coral">Tactical Edge</span>
+				</h1>
+				<p class="text-on-surface-variant text-body max-w-lg leading-relaxed">
+					Experience a retro-styled curriculum where design theory meets gamified execution. Build a world-class portfolio while competing in high-stakes creative arenas.
+				</p>
+				<div class="flex flex-wrap gap-md pt-md">
+					<a href="#tracks" class="inline-flex items-center justify-center bg-accent-gold text-on-secondary-fixed font-bold text-sm px-xl py-md rounded-full shadow-lg glow-gold hover:bg-accent-light transition-all btn-bounce">
+						Get Started
+					</a>
+					<a href="#tracks" class="inline-flex items-center justify-center border-2 border-primary text-primary font-bold text-sm px-xl py-md rounded-full hover:bg-primary/5 transition-all btn-bounce">
+						Xem lộ trình
+					</a>
+				</div>
 			</div>
-
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
-				<a th:each="dm : ${danhMucs}"
-				   th:href="@{/danhmuc/{id}(id=${dm.maDM})}"
-				   class="group bg-surface-container-low border border-border-subtle rounded-xl p-xxl hover:border-primary-container transition-all flex flex-col items-center text-center">
-					<div class="w-16 h-16 rounded-full bg-surface-container-high border border-border-subtle flex items-center justify-center mb-xl group-hover:bg-primary-container transition-all overflow-hidden">
-						<img th:if="${dm.iconURL != null and !#strings.isEmpty(dm.iconURL)}"
-							 th:src="${dm.iconURL}"
-							 th:alt="${dm.tenDanhMuc}"
-							 class="w-10 h-10 object-contain">
-						<span th:unless="${dm.iconURL != null and !#strings.isEmpty(dm.iconURL)}"
-							  class="material-symbols-outlined text-[32px]">brush</span>
+			<!-- Card Fan Graphic -->
+			<div class="hidden lg:block relative h-[500px] anim-fade-right">
+				<div class="card-fan-container">
+					<div class="fan-card -rotate-[24deg] -translate-x-32 translate-y-12">
+						<img class="w-full h-full object-cover rounded-[10px]" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApVJICrkC5pbrgwF8TeMvFO4ZCPcpxykjJqqCEo5VGvAUwrY5_QJr15BUXASV3ALZMM_qswb2PcdG7VJeTVfDQZXi1kEPcWlXQ8SSbCWo3t14x0BvB0kU_g3xxHYSh6ge6q7RvCqs7dpO6PgtBuWKZnApZ5nEPcPmSHcHYYVSjNPPcGi2KsNVI84e4tJbS8AS2-0PLYCgKKieNYa7tbK3gopUECUZ1z5IrS5UXe-ahqjVX1VxY4qxFY3mpWGR4H3Y0wC7OoPAJcfnW"/>
 					</div>
-					<h3 class="font-h2-settings text-h2-settings text-text-primary mb-md" th:text="${dm.tenDanhMuc}">UI Design</h3>
-				</a>
-
-				<!-- Empty state -->
-				<div th:if="${danhMucs == null or #lists.isEmpty(danhMucs)}"
-					 class="bg-surface-container-low border border-border-subtle rounded-xl p-xxl text-center">
-					<div class="text-text-primary font-semibold mb-sm">Chưa có danh mục</div>
-					<div class="text-text-secondary">Hãy thêm dữ liệu vào bảng DANHMUC rồi refresh trang.</div>
+					<div class="fan-card -rotate-[12deg] -translate-x-16 translate-y-4">
+						<img class="w-full h-full object-cover rounded-[10px]" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-3DFsU-14AtHrCAAJCz88qiEnAe1ujdk8Q808TbCOknhNaxBtET9211dPrqWpqMWs8eGQZj6_hHuGdUDeh2K03Sjaj_JbXcCwkYFZhbqV7n45DtlqcAnzcWsYuln3gw2X6D_EPTwNPMDp6oifnpeyoMBvGrKNWGwnMDTDwydtc-Mi4XSVXo8lSzs9nDbPtuLObq9c9dmcv5lbA7KEK4rEnOkTAXGEtR3_vfYRH9D23mWFE4TPMnJhGn__g2XStmlMoipUqj9Tdc"/>
+					</div>
+					<div class="fan-card rotate-0 z-20 shadow-xl border-primary">
+						<img class="w-full h-full object-cover rounded-[10px]" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0lPqk3TZ2nqpjysszVP7nqJJ2w8wA_4S2hGZGuEUtTvOaVWW8xhHPZTphhcr1sOmRpKF_GVrFR-o-LjPTpibPGY8BnFI12YqdCzbc28rDnOoVubJrnsJFM59Zll-Vdl7KWV47VxnfK9N_J4HJfHmhM1GfmYgNYnwt9nTEO9t4-ZDdts5NTB9BxTG2Y6_vB9XZjL1jAIN8t3gDK8fKZZdhVrs5qpmnj_rrZdFTXXEPLDohXMCg-KMc9Gj3--tYnjAjMnvNA-0nnbu5"/>
+					</div>
+					<div class="fan-card rotate-[12deg] translate-x-16 translate-y-4">
+						<img class="w-full h-full object-cover rounded-[10px]" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqaWOkI4h4NjvUQDPATiSTukGDfFJRaHTN66cKMZOcdujiJdVopJePO7uQm7vccAKK-bub15cr38pVwVnVsH5-crZnlT0rsutV5RQrfrcbl106nMEOM7Xh_fxwrrmUfUijw-Awsa5j6SYc0ijIJsdEkH4DLSxusqL2yLVpZJw1CUkXHDqbKBYi72FFzNYHltn2qT-eTEVCC8rFuva8Onh5cuLJBQBfjUGOlrw0Lwd9Yz6kGvd9iwgC6M8ZXsvIO0X3T0pSYFEt8LLZ"/>
+					</div>
+					<div class="fan-card rotate-[24deg] translate-x-32 translate-y-12">
+						<img class="w-full h-full object-cover rounded-[10px]" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5g_booDW0g9y5fTMs0YlHYJLNqMU1RzIHsMnPN26X8p1kSRoa074UdSH22IF5Mwfe1EQVtA87vLBr7jcE516TNiELYukJaSE-2kThV7v6r9hhd9ccPXt1dq4PNgbj0XsYNCREElL1TVEVjD5xePmhX4UANrxehDSNn4FwhQB4tYMJv_tMOi3Bx87ajKm3cB26EbcZCxXKDCWBq2g--Efn0SW-_7HrMoC-EhKkleZJtLUub5e0U-g6UuUqs6KnphcUUs8jpbxzphk"/>
+					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+	<!-- Value Propositions -->
+	<section class="py-20 md:py-24 bg-surface-container-low">
+		<div class="max-w-7xl mx-auto px-md">
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+				<div class="bg-white p-8 rounded-xl shadow-card card-bordered border-l-[6px] border-l-primary-light flex flex-col gap-4 anim-fade-up">
+					<div class="w-12 h-12 bg-primary-bg flex items-center justify-center rounded-lg">
+						<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">sports_esports</span>
+					</div>
+					<h3 class="font-h3 text-h3 text-primary">Game-based Learning</h3>
+					<p class="text-on-surface-variant text-sm">Level up through design challenges that feel like a high-stakes board game. Earn XP and unlock advanced modules.</p>
+				</div>
+				<div class="bg-white p-8 rounded-xl shadow-card card-bordered border-l-[6px] border-l-primary-light flex flex-col gap-4 anim-fade-up anim-delay-1">
+					<div class="w-12 h-12 bg-primary-bg flex items-center justify-center rounded-lg">
+						<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">groups</span>
+					</div>
+					<h3 class="font-h3 text-h3 text-primary">Live Interactive Labs</h3>
+					<p class="text-on-surface-variant text-sm">Join real-time feedback loops with industry pros in our digital arena. Collaborative design at its peak.</p>
+				</div>
+				<div class="bg-white p-8 rounded-xl shadow-card card-bordered border-l-[6px] border-l-primary-light flex flex-col gap-4 anim-fade-up anim-delay-2">
+					<div class="w-12 h-12 bg-primary-bg flex items-center justify-center rounded-lg">
+						<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+					</div>
+					<h3 class="font-h3 text-h3 text-primary">Industry Certification</h3>
+					<p class="text-on-surface-variant text-sm">Graduate with a credential recognized by top-tier tech firms. A verified badge of elite creative skill.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Curriculum Tracks (DANHMUC từ CSDL) -->
+	<section class="py-20 md:py-28" id="tracks">
+		<div class="max-w-7xl mx-auto px-md">
+			<div class="flex flex-col items-center mb-16 anim-scale-in">
+				<div class="ribbon-banner shadow-sm">
+					<h2 class="font-h2 text-h2 text-primary tracking-tight">CURRICULUM ARENAS</h2>
+				</div>
+				<div class="w-full max-w-xs h-0 border-t-2 border-dashed border-outline-variant mt-sm"></div>
+			</div>
 
-	<!-- Footer -->
-	<footer class="bg-background-app py-xl border-t border-border-subtle px-lg flex flex-col md:flex-row justify-between items-center gap-xl">
-		<div class="flex flex-col items-center md:items-start gap-base">
-			<span class="font-group-header text-group-header uppercase text-primary">OpenLearning UI/UX</span>
-			<p class="font-metadata text-metadata text-text-secondary">© 2026 OpenLearning</p>
+			<div th:if="${danhMucs != null and !#lists.isEmpty(danhMucs)}" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+				<a th:each="dm, iterStat : ${danhMucs}"
+				   th:href="@{/danhmuc/{id}(id=${dm.maDM})}"
+				   class="group relative overflow-hidden rounded-xl bg-white shadow-card active-glow card-bordered block text-left anim-fade-up">
+					<div class="h-[240rpx] w-full relative overflow-hidden"
+						 th:classappend="${iterStat.even} ? ' bg-primary' : ' bg-coral'">
+						<img th:if="${dm.iconURL != null and !#strings.isEmpty(dm.iconURL)}"
+							 th:src="${dm.iconURL}"
+							 th:alt="${dm.tenDanhMuc}"
+							 class="absolute inset-0 w-full h-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-110"/>
+						<div th:unless="${dm.iconURL != null and !#strings.isEmpty(dm.iconURL)}"
+							 class="absolute inset-0 flex items-center justify-center bg-black/10">
+							<span class="material-symbols-outlined text-white text-7xl drop-shadow-md" style="font-variation-settings: 'FILL' 1;">palette</span>
+						</div>
+						<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent pointer-events-none" th:if="${iterStat.even}"></div>
+						<div class="absolute inset-0 bg-gradient-to-t from-coral/80 to-transparent pointer-events-none" th:unless="${iterStat.even}"></div>
+						<div class="absolute bottom-md left-md z-10">
+							<span class="bg-accent-gold text-on-secondary-fixed text-xs font-bold px-sm py-xs rounded-full" th:text="${iterStat.even} ? 'CORE TRACK' : 'STRATEGY TRACK'">TRACK</span>
+						</div>
+					</div>
+					<div class="p-8 flex flex-col gap-4">
+						<div class="flex justify-between items-center gap-sm">
+							<h3 class="font-h1 text-h2 text-on-surface" th:text="${dm.tenDanhMuc}">Track</h3>
+							<span class="font-bold text-sm shrink-0" th:class="${iterStat.even} ? 'text-primary' : 'text-coral'">Danh mục</span>
+						</div>
+						<p class="text-on-surface-variant leading-relaxed">Khám phá bài học và bài lab trong lộ trình này — nội dung lấy từ hệ thống học tập của bạn.</p>
+						<span class="mt-md w-full py-md bg-cream border-2 border-accent-gold text-on-secondary-fixed font-bold rounded-full hover:bg-accent-gold transition-colors btn-bounce text-center">
+							Explore Arena
+						</span>
+					</div>
+				</a>
+			</div>
+
+			<div th:if="${danhMucs == null or #lists.isEmpty(danhMucs)}" class="max-w-xl mx-auto text-center rounded-xl border border-outline-variant/40 bg-white p-xl shadow-card">
+				<p class="font-h3 text-on-surface mb-sm">Chưa có danh mục hiển thị</p>
+				<p class="text-on-surface-variant text-sm">Thêm bản ghi vào bảng DANHMUC (hoặc kiểm tra bộ lọc danh mục trên server) rồi tải lại trang.</p>
+			</div>
 		</div>
-		<div class="flex flex-wrap justify-center gap-xl">
-			<a class="font-metadata text-metadata text-text-secondary hover:text-text-primary transition-colors" href="#">Changelog</a>
-			<a class="font-metadata text-metadata text-text-secondary hover:text-text-primary transition-colors" href="#">API</a>
-			<a class="font-metadata text-metadata text-text-secondary hover:text-text-primary transition-colors" href="#">Privacy</a>
+	</section>
+	<!-- Mentor Section -->
+	<section class="py-20 md:py-28 bg-cream" id="mentors">
+		<div class="max-w-7xl mx-auto px-md">
+			<div class="text-center mb-16 anim-fade-up">
+				<h2 class="font-h2 text-[48rpx] text-primary mb-sm">Lead Mentors</h2>
+				<p class="text-on-surface-variant max-w-xl mx-auto">Learn directly from the tacticians behind world-class digital products.</p>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+				<div class="flex flex-col items-center text-center bg-white p-8 rounded-2xl card-bordered anim-fade-up">
+					<div class="relative mb-md">
+						<div class="w-32 h-32 rounded-full border-4 border-accent-gold p-1">
+							<img class="w-full h-full rounded-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3NLyK0SuWrVy9rrt2wH34aqenGmlLahc_mtJx4lJzSYE9v8FOT3GW1fw_SI7b9Wuk-cj9XlChEe_o4SZvOZ97f8cAJVT5Rg8DRWLjr-h3kX7rnHslwyH94N8opZ4xvkCLYyYggABmR4lZGBYYS0hFJnYnvbDwgfoigYnL_PyLOXImnRSbncSgXEzLCqbTFjSzrmoXd2EQIBhVm9612hZs3Mh5StZoARsDknPnXXgZ1M0WCEZlkZOPu4877ct7MeqJZaad1oA0VtcO"/>
+						</div>
+						<div class="absolute -bottom-2 -right-2 bg-primary text-white p-2 rounded-full">
+							<span class="material-symbols-outlined text-[20rpx]" style="font-variation-settings: 'FILL' 1;">verified</span>
+						</div>
+					</div>
+					<h4 class="font-h3 text-on-surface">Marcus Thorne</h4>
+					<span class="text-primary font-bold text-xs uppercase mb-sm">Ex-Adobe Lead Designer</span>
+					<p class="text-on-surface-variant text-sm italic">"I teach design as a strategic game of precision and purpose."</p>
+				</div>
+				<div class="flex flex-col items-center text-center bg-white p-8 rounded-2xl card-bordered anim-fade-up anim-delay-1">
+					<div class="relative mb-md">
+						<div class="w-32 h-32 rounded-full border-4 border-coral p-1">
+							<img class="w-full h-full rounded-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGWSSlJASlbE8bL4zL5ic0gaeztX7ZR27OU6YWNPnkgPfx3xVU_Z9yoyV8x7vsp_DDiKVa_zwuVYhMN5kgN2f2p2MWAQfgAhzUXLMsoEyc1cNPa-VixmwYKcT8--J546AZdMv6-lwjW_da9uVRKWzpM8iJuzfu4zYm-joga3ujfdbDizf9cXqLritSFRsNyEyLLXFT-WXJxdCxAD1FvFyJC3qAzeMIbieDQfry_tQu3cwbaWfx8A9ri76mN4YnxwpzZLfW-R3HUp9L"/>
+						</div>
+						<div class="absolute -bottom-2 -right-2 bg-coral text-white p-2 rounded-full">
+							<span class="material-symbols-outlined text-[20rpx]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+						</div>
+					</div>
+					<h4 class="font-h3 text-on-surface">Elara Vance</h4>
+					<span class="text-coral font-bold text-xs uppercase mb-sm">Senior UX Strategist</span>
+					<p class="text-on-surface-variant text-sm italic">"Design is empathy practiced with tactical discipline."</p>
+				</div>
+				<div class="flex flex-col items-center text-center bg-white p-8 rounded-2xl card-bordered anim-fade-up anim-delay-2">
+					<div class="relative mb-md">
+						<div class="w-32 h-32 rounded-full border-4 border-primary p-1">
+							<img class="w-full h-full rounded-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_omAzCIU2_LV_2rTgDHLftXSohZG7umgjYaRNXuTat4S8Mz6mEm1VThZJ1gI5hv4f2ubeQC6iRjjvHNkgfPDMTGZKP-B3nzJGNWpKmjiHASqAWzBnTEtIXBcCR_kMDTQfGN6jqse-WFuzk5n3HTZoMXkc69yrlKZLpXCNWpzh2Yo6R843gcnjJVFKk7Qo8H_dQs_Fn3WQuGHXosP_ktoVZHVlt1pCbW8dviGfgIlGmsvNcPxQKT7Edbs3Xa3VhSZhXpUXL0zI5Xgj"/>
+						</div>
+						<div class="absolute -bottom-2 -right-2 bg-sky-blue text-white p-2 rounded-full">
+							<span class="material-symbols-outlined text-[20rpx]" style="font-variation-settings: 'FILL' 1;">palette</span>
+						</div>
+					</div>
+					<h4 class="font-h3 text-on-surface">Julian Ray</h4>
+					<span class="text-primary font-bold text-xs uppercase mb-sm">Visual Arts Director</span>
+					<p class="text-on-surface-variant text-sm italic">"Beauty is a function of clear, competitive strategy."</p>
+				</div>
+			</div>
 		</div>
-		<div class="flex gap-lg">
-			<span class="material-symbols-outlined text-text-secondary hover:text-primary cursor-pointer" data-icon="terminal">terminal</span>
-			<span class="material-symbols-outlined text-text-secondary hover:text-primary cursor-pointer" data-icon="language">language</span>
+	</section>
+	<!-- Final CTA Section -->
+	<section class="py-20 md:py-28 bg-primary" id="cta">
+		<div class="max-w-5xl mx-auto px-md text-center py-16 anim-scale-in">
+			<div class="inline-block mb-lg">
+				<div class="ribbon-banner shadow-lg">
+					<span class="font-display text-h3 text-primary">ENLIST TODAY</span>
+				</div>
+			</div>
+			<h2 class="font-h1 text-white text-[56rpx] mb-md leading-tight">Start Your Journey to <br/>Design Mastery</h2>
+			<p class="text-primary-fixed-dim text-body mb-xl max-w-2xl mx-auto">
+				Join over 5,000 designers who have already leveled up their careers in the Labs. Your first challenge awaits.
+			</p>
+			<div class="flex flex-col sm:flex-row gap-md justify-center">
+				<a href="#tracks" class="inline-flex items-center justify-center bg-accent-gold text-on-secondary-fixed font-bold text-h3 px-xl py-lg rounded-full shadow-lg glow-gold hover:bg-accent-light transition-all btn-bounce">
+					Join Now
+				</a>
+				<a href="#tracks" class="inline-flex items-center justify-center bg-transparent border-2 border-white text-white font-bold text-h3 px-xl py-lg rounded-full hover:bg-white/10 transition-all btn-bounce">
+					View tracks
+				</a>
+			</div>
 		</div>
-	</footer>
+	</section>
 </main>
+<!-- Footer -->
+<footer class="bg-inverse-surface text-outline-variant py-20 mb-0 md:mb-0">
+	<div class="max-w-7xl mx-auto px-md grid grid-cols-1 md:grid-cols-4 gap-xl">
+		<div class="col-span-1 md:col-span-2">
+			<span class="font-display text-h2 text-primary-light italic mb-md block">UI/UX LABS</span>
+			<p class="max-w-sm mb-lg">The world's first retro-tactile design academy. We don't just teach design; we train designers to win.</p>
+			<div class="flex gap-md">
+				<span class="material-symbols-outlined cursor-pointer hover:text-white">public</span>
+				<span class="material-symbols-outlined cursor-pointer hover:text-white">video_library</span>
+				<span class="material-symbols-outlined cursor-pointer hover:text-white">chat</span>
+			</div>
+		</div>
+		<div>
+			<h4 class="font-bold text-white mb-md">Tracks</h4>
+			<ul class="space-y-sm text-sm" th:if="${danhMucs != null and !#lists.isEmpty(danhMucs)}">
+				<li th:each="dm : ${danhMucs}"><a class="hover:text-primary-light" th:href="@{/danhmuc/{id}(id=${dm.maDM})}" th:text="${dm.tenDanhMuc}">Track</a></li>
+			</ul>
+			<p class="text-sm" th:if="${danhMucs == null or #lists.isEmpty(danhMucs)}">Chưa có danh mục</p>
+		</div>
+		<div>
+			<h4 class="font-bold text-white mb-md">Support</h4>
+			<ul class="space-y-sm text-sm">
+				<li><a class="hover:text-primary-light" href="#tracks">Curriculum</a></li>
+				<li><a class="hover:text-primary-light" href="/admin">Admin</a></li>
+				<li><a class="hover:text-primary-light" href="/login">Đăng nhập quản trị</a></li>
+				<li><a class="hover:text-primary-light" href="#">Privacy Policy</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="max-w-7xl mx-auto px-md mt-xl pt-lg border-t border-white/10 text-center text-xs">
+		© 2024 UI/UX LABS INC. ALL RIGHTS RESERVED. DESIGNED FOR CHAMPIONS.
+	</div>
+</footer>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm min-h-[80rpx] bg-cream dark:bg-inverse-surface border-t-2 border-dashed border-outline-variant shadow-[0_-4px_10px_rgba(0,106,102,0.1)] rounded-t-xl" style="padding-bottom: max(8px, env(safe-area-inset-bottom));">
+	<a href="/" class="flex flex-col items-center justify-center bg-secondary-container dark:bg-on-secondary-fixed-variant text-on-secondary-container dark:text-secondary-fixed rounded-full px-sm py-xs scale-105 shadow-[0_0_15px_rgba(252,208,61,0.4)]">
+		<span class="material-symbols-outlined">home</span>
+		<span class="font-sm text-sm">Home</span>
+	</a>
+	<a th:if="${danhMucs != null and !#lists.isEmpty(danhMucs)}" th:href="@{/danhmuc/{id}(id=${danhMucs[0].maDM})}" class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-sm py-xs hover:bg-surface-container-highest transition-colors rounded-lg max-w-[25%]">
+		<span class="material-symbols-outlined shrink-0">palette</span>
+		<span class="font-sm text-xs truncate w-full text-center" th:text="${danhMucs[0].tenDanhMuc}">UI</span>
+	</a>
+	<a th:if="${danhMucs != null and #lists.size(danhMucs) > 1}" th:href="@{/danhmuc/{id}(id=${danhMucs[1].maDM})}" class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-sm py-xs hover:bg-surface-container-highest transition-colors rounded-lg max-w-[25%]">
+		<span class="material-symbols-outlined shrink-0">architecture</span>
+		<span class="font-sm text-xs truncate w-full text-center" th:text="${danhMucs[1].tenDanhMuc}">UX</span>
+	</a>
+	<a href="#cta" class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-sm py-xs hover:bg-surface-container-highest transition-colors rounded-lg">
+		<span class="material-symbols-outlined">military_tech</span>
+		<span class="font-sm text-sm">Rewards</span>
+	</a>
+</nav>
+<!-- Scroll-triggered Animation Observer -->
+<script>
+(function() {
+	var observer = new IntersectionObserver(function(entries) {
+		entries.forEach(function(entry) {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('is-visible');
+				observer.unobserve(entry.target);
+			}
+		});
+	}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+	document.querySelectorAll('.anim-fade-up, .anim-fade-left, .anim-fade-right, .anim-scale-in')
+		.forEach(function(el) { observer.observe(el); });
+
+	// Smooth scroll for anchor links
+	document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+		a.addEventListener('click', function(e) {
+			var target = document.querySelector(this.getAttribute('href'));
+			if (target) {
+				e.preventDefault();
+				target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			}
+		});
+	});
+})();
+</script>
 </body>
 </html>
-

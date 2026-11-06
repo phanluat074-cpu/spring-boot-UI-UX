@@ -8,16 +8,39 @@
 </head>
 <body>
 <div class="container py-4">
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h1 class="h4 mb-0">Quản lý Trắc nghiệm</h1>
-		<a href="/admin" class="btn btn-outline-secondary">Menu Admin</a>
-	</div>
-	<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+	<div th:replace="~{admin/fragments :: adminToolbar}"></div>
+	<h1 class="h4 mb-3">Quản lý Trắc nghiệm</h1>
+	<div th:if="${error}" class="alert alert-danger" th:utext="${error}"></div>
+	<form method="get" class="row g-2 align-items-end mb-3">
+		<input type="hidden" name="editId" th:value="${param.editId}">
+		<div class="col-md-4">
+			<label class="form-label small mb-0">Tìm kiếm (câu hỏi, giải thích)</label>
+			<input class="form-control" name="q" th:value="${searchQ}" placeholder="Từ khóa…">
+		</div>
+		<div class="col-md-3">
+			<label class="form-label small mb-0">Lọc theo bài học</label>
+			<select class="form-select" name="maBH">
+				<option value="" th:selected="${filterMaBH == null}">Tất cả</option>
+				<option th:each="bh : ${baiHocs}" th:value="${bh.maBH}" th:selected="${filterMaBH != null and filterMaBH == bh.maBH}" th:text="${bh.tenBH}"></option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label small mb-0">/ trang</label>
+			<select class="form-select" name="size">
+				<option value="10" th:selected="${pageSize == 10}">10</option>
+				<option value="20" th:selected="${pageSize == 20}">20</option>
+				<option value="50" th:selected="${pageSize == 50}">50</option>
+			</select>
+		</div>
+		<div class="col-md-1"><button type="submit" class="btn btn-primary w-100">Lọc</button></div>
+		<div class="col-md-2"><a th:href="@{/admin/tracnghiem}" class="btn btn-outline-secondary w-100">Xóa bộ lọc</a></div>
+		<input type="hidden" name="page" value="0">
+	</form>
 	<div class="row g-4">
 		<div class="col-lg-4">
 			<div class="card"><div class="card-body">
 				<h2 class="h6">Thêm / Sửa</h2>
-				<form method="post" action="/admin/tracnghiem/save">
+				<form id="formTracNghiem" method="post" action="/admin/tracnghiem/save" novalidate>
 					<input type="hidden" name="maTN" th:value="${form.maTN}">
 					<div class="mb-2"><label class="form-label">Nội dung câu hỏi</label><textarea class="form-control" name="noiDungCauHoi" rows="3" required th:text="${form.noiDungCauHoi}"></textarea></div>
 					<div class="mb-2"><label class="form-label">Lời giải thích</label><textarea class="form-control" name="loiGiaiThich" rows="3" required th:text="${form.loiGiaiThich}"></textarea></div>
@@ -29,20 +52,21 @@
 						</select>
 					</div>
 					<button class="btn btn-primary">Lưu</button>
-					<a href="/admin/tracnghiem" class="btn btn-light">Mới</a>
+					<a th:href="@{/admin/tracnghiem(q=${searchQ},maBH=${filterMaBH},page=${resultPage.number},size=${pageSize})}" class="btn btn-light">Mới</a>
 				</form>
 			</div></div>
 		</div>
 		<div class="col-lg-8">
-			<table class="table table-bordered table-hover">
+			<p class="text-muted small" th:if="${resultPage.totalElements == 0}">Không có bản ghi khớp bộ lọc.</p>
+			<table class="table table-bordered table-hover" th:if="${resultPage.totalElements > 0}">
 				<thead><tr><th>MaTN</th><th>Câu hỏi</th><th>MaBH</th><th></th></tr></thead>
 				<tbody>
 				<tr th:each="i : ${items}">
 					<td th:text="${i.maTN}"></td>
-					<td th:text="${i.noiDungCauHoi}"></td>
+					<td class="text-break" style="max-width:280px" th:text="${i.noiDungCauHoi}"></td>
 					<td th:text="${i.maBH}"></td>
 					<td class="text-nowrap">
-						<a class="btn btn-sm btn-warning" th:href="@{/admin/tracnghiem(editId=${i.maTN})}">Sửa</a>
+						<a class="btn btn-sm btn-warning" th:href="@{/admin/tracnghiem(editId=${i.maTN},q=${searchQ},maBH=${filterMaBH},page=${resultPage.number},size=${pageSize})}">Sửa</a>
 						<form th:action="@{/admin/tracnghiem/{id}/delete(id=${i.maTN})}" method="post" class="d-inline">
 							<button class="btn btn-sm btn-danger" onclick="return confirm('Xóa câu hỏi này?')">Xóa</button>
 						</form>
@@ -50,9 +74,25 @@
 				</tr>
 				</tbody>
 			</table>
+			<nav class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2" th:if="${resultPage.totalPages > 1}">
+				<small class="text-muted">Trang <span th:text="${resultPage.number + 1}"></span> / <span th:text="${resultPage.totalPages}"></span></small>
+				<div class="btn-group">
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}" th:href="@{/admin/tracnghiem(q=${searchQ},maBH=${filterMaBH},page=0,size=${resultPage.size},editId=${param.editId})}">Đầu</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}" th:href="@{/admin/tracnghiem(q=${searchQ},maBH=${filterMaBH},page=${resultPage.number - 1},size=${resultPage.size},editId=${param.editId})}">Trước</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}" th:href="@{/admin/tracnghiem(q=${searchQ},maBH=${filterMaBH},page=${resultPage.number + 1},size=${resultPage.size},editId=${param.editId})}">Sau</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}" th:href="@{/admin/tracnghiem(q=${searchQ},maBH=${filterMaBH},page=${resultPage.totalPages - 1},size=${resultPage.size},editId=${param.editId})}">Cuối</a>
+				</div>
+			</nav>
 		</div>
 	</div>
 </div>
+<script src="/js/admin-validation.js"></script>
+<script>
+AdminValidation.attachValidation('#formTracNghiem', [
+	{ name: 'noiDungCauHoi', rules: [{ type: 'required', message: 'Nội dung câu hỏi không được để trống.' }]},
+	{ name: 'loiGiaiThich', rules: [{ type: 'required', message: 'Lời giải thích không được để trống.' }]},
+	{ name: 'maBH', rules: [{ type: 'select', message: 'Vui lòng chọn bài học.' }]}
+]);
+</script>
 </body>
 </html>
-

@@ -8,15 +8,39 @@
 </head>
 <body>
 <div class="container py-4">
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h1 class="h4 mb-0">Quản lý Interactive Lab</h1>
-		<a href="/admin" class="btn btn-outline-secondary">Menu Admin</a>
-	</div>
+	<div th:replace="~{admin/fragments :: adminToolbar}"></div>
+	<h1 class="h4 mb-3">Quản lý Interactive Lab</h1>
+	<div th:if="${error}" class="alert alert-danger" th:utext="${error}"></div>
+	<form method="get" class="row g-2 align-items-end mb-3">
+		<input type="hidden" name="editId" th:value="${param.editId}">
+		<div class="col-md-4">
+			<label class="form-label small mb-0">Tìm kiếm (tên, mô tả)</label>
+			<input class="form-control" name="q" th:value="${searchQ}" placeholder="Từ khóa…">
+		</div>
+		<div class="col-md-3">
+			<label class="form-label small mb-0">Lọc theo bài học</label>
+			<select class="form-select" name="maBH">
+				<option value="" th:selected="${filterMaBH == null}">Tất cả</option>
+				<option th:each="bh : ${baiHocs}" th:value="${bh.maBH}" th:selected="${filterMaBH != null and filterMaBH == bh.maBH}" th:text="${bh.tenBH}"></option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label small mb-0">/ trang</label>
+			<select class="form-select" name="size">
+				<option value="10" th:selected="${pageSize == 10}">10</option>
+				<option value="20" th:selected="${pageSize == 20}">20</option>
+				<option value="50" th:selected="${pageSize == 50}">50</option>
+			</select>
+		</div>
+		<div class="col-md-1"><button type="submit" class="btn btn-primary w-100">Lọc</button></div>
+		<div class="col-md-2"><a th:href="@{/admin/lab}" class="btn btn-outline-secondary w-100">Xóa bộ lọc</a></div>
+		<input type="hidden" name="page" value="0">
+	</form>
 	<div class="row g-4">
 		<div class="col-lg-4">
 			<div class="card"><div class="card-body">
 				<h2 class="h6">Thêm / Sửa</h2>
-				<form method="post" action="/admin/lab/save">
+				<form id="formLab" method="post" action="/admin/lab/save" novalidate>
 					<input type="hidden" name="maTH" th:value="${form.maTH}">
 					<div class="mb-2"><label class="form-label">Tên thực hành</label><input class="form-control" name="tenThucHanh" th:value="${form.tenThucHanh}" required></div>
 					<div class="mb-2"><label class="form-label">Mô tả</label><textarea class="form-control" name="moTaThucHanh" rows="2" required th:text="${form.moTaThucHanh}"></textarea></div>
@@ -31,12 +55,13 @@
 						</select>
 					</div>
 					<button class="btn btn-primary">Lưu</button>
-					<a href="/admin/lab" class="btn btn-light">Mới</a>
+					<a th:href="@{/admin/lab(q=${searchQ},maBH=${filterMaBH},page=${resultPage.number},size=${pageSize})}" class="btn btn-light">Mới</a>
 				</form>
 			</div></div>
 		</div>
 		<div class="col-lg-8">
-			<table class="table table-bordered table-hover">
+			<p class="text-muted small" th:if="${resultPage.totalElements == 0}">Không có bản ghi khớp bộ lọc.</p>
+			<table class="table table-bordered table-hover" th:if="${resultPage.totalElements > 0}">
 				<thead><tr><th>MaTH</th><th>Tên</th><th>MaBH</th><th></th></tr></thead>
 				<tbody>
 				<tr th:each="i : ${items}">
@@ -44,7 +69,7 @@
 					<td th:text="${i.tenThucHanh}"></td>
 					<td th:text="${i.maBH}"></td>
 					<td class="text-nowrap">
-						<a class="btn btn-sm btn-warning" th:href="@{/admin/lab(editId=${i.maTH})}">Sửa</a>
+						<a class="btn btn-sm btn-warning" th:href="@{/admin/lab(editId=${i.maTH},q=${searchQ},maBH=${filterMaBH},page=${resultPage.number},size=${pageSize})}">Sửa</a>
 						<form th:action="@{/admin/lab/{id}/delete(id=${i.maTH})}" method="post" class="d-inline">
 							<button class="btn btn-sm btn-danger" onclick="return confirm('Xóa lab này?')">Xóa</button>
 						</form>
@@ -52,9 +77,30 @@
 				</tr>
 				</tbody>
 			</table>
+			<nav class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2" th:if="${resultPage.totalPages > 1}">
+				<small class="text-muted">Trang <span th:text="${resultPage.number + 1}"></span> / <span th:text="${resultPage.totalPages}"></span></small>
+				<div class="btn-group">
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}" th:href="@{/admin/lab(q=${searchQ},maBH=${filterMaBH},page=0,size=${resultPage.size},editId=${param.editId})}">Đầu</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}" th:href="@{/admin/lab(q=${searchQ},maBH=${filterMaBH},page=${resultPage.number - 1},size=${resultPage.size},editId=${param.editId})}">Trước</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}" th:href="@{/admin/lab(q=${searchQ},maBH=${filterMaBH},page=${resultPage.number + 1},size=${resultPage.size},editId=${param.editId})}">Sau</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}" th:href="@{/admin/lab(q=${searchQ},maBH=${filterMaBH},page=${resultPage.totalPages - 1},size=${resultPage.size},editId=${param.editId})}">Cuối</a>
+				</div>
+			</nav>
 		</div>
 	</div>
 </div>
+<script src="/js/admin-validation.js"></script>
+<script>
+AdminValidation.attachValidation('#formLab', [
+	{ name: 'tenThucHanh', rules: [
+		{ type: 'required', message: 'Tên thực hành không được để trống.' },
+		{ type: 'maxLength', max: 200, message: 'Tên thực hành không được vượt quá 200 ký tự.' }
+	]},
+	{ name: 'moTaThucHanh', rules: [{ type: 'required', message: 'Mô tả thực hành không được để trống.' }]},
+	{ name: 'trangThaiBanDau', rules: [{ type: 'required', message: 'Trạng thái ban đầu không được để trống.' }]},
+	{ name: 'trangThaiDung', rules: [{ type: 'required', message: 'Trạng thái đúng không được để trống.' }]},
+	{ name: 'maBH', rules: [{ type: 'select', message: 'Vui lòng chọn bài học.' }]}
+]);
+</script>
 </body>
 </html>
-

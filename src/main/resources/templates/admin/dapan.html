@@ -8,15 +8,39 @@
 </head>
 <body>
 <div class="container py-4">
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h1 class="h4 mb-0">Quản lý Đáp án</h1>
-		<a href="/admin" class="btn btn-outline-secondary">Menu Admin</a>
-	</div>
+	<div th:replace="~{admin/fragments :: adminToolbar}"></div>
+	<h1 class="h4 mb-3">Quản lý Đáp án</h1>
+	<div th:if="${error}" class="alert alert-danger" th:utext="${error}"></div>
+	<form method="get" class="row g-2 align-items-end mb-3">
+		<input type="hidden" name="editId" th:value="${param.editId}">
+		<div class="col-md-4">
+			<label class="form-label small mb-0">Tìm kiếm (nội dung đáp án)</label>
+			<input class="form-control" name="q" th:value="${searchQ}" placeholder="Từ khóa…">
+		</div>
+		<div class="col-md-3">
+			<label class="form-label small mb-0">Lọc theo câu hỏi (MaTN)</label>
+			<select class="form-select" name="maTN">
+				<option value="" th:selected="${filterMaTN == null}">Tất cả</option>
+				<option th:each="tn : ${tracNghiems}" th:value="${tn.maTN}" th:selected="${filterMaTN != null and filterMaTN == tn.maTN}" th:text="|${tn.maTN} — ${tn.noiDungCauHoi != null ? #strings.abbreviate(tn.noiDungCauHoi, 40) : ''}|"></option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label small mb-0">/ trang</label>
+			<select class="form-select" name="size">
+				<option value="10" th:selected="${pageSize == 10}">10</option>
+				<option value="20" th:selected="${pageSize == 20}">20</option>
+				<option value="50" th:selected="${pageSize == 50}">50</option>
+			</select>
+		</div>
+		<div class="col-md-1"><button type="submit" class="btn btn-primary w-100">Lọc</button></div>
+		<div class="col-md-2"><a th:href="@{/admin/dapan}" class="btn btn-outline-secondary w-100">Xóa bộ lọc</a></div>
+		<input type="hidden" name="page" value="0">
+	</form>
 	<div class="row g-4">
 		<div class="col-lg-4">
 			<div class="card"><div class="card-body">
 				<h2 class="h6">Thêm / Sửa</h2>
-				<form method="post" action="/admin/dapan/save">
+				<form id="formDapAn" method="post" action="/admin/dapan/save" novalidate>
 					<input type="hidden" name="maDA" th:value="${form.maDA}">
 					<div class="mb-2"><label class="form-label">Nội dung đáp án</label><textarea class="form-control" name="noiDungDapAn" rows="3" required th:text="${form.noiDungDapAn}"></textarea></div>
 					<div class="mb-2 form-check">
@@ -27,25 +51,26 @@
 						<label class="form-label">Câu hỏi (MaTN)</label>
 						<select class="form-select" name="maTN" required>
 							<option value="">-- Chọn --</option>
-							<option th:each="tn : ${tracNghiems}" th:value="${tn.maTN}" th:selected="${form.maTN == tn.maTN}" th:text="${tn.maTN + ' - ' + tn.noiDungCauHoi}"></option>
+							<option th:each="tn : ${tracNghiems}" th:value="${tn.maTN}" th:selected="${form.maTN == tn.maTN}" th:text="${tn.maTN + ' - ' + (tn.noiDungCauHoi != null ? #strings.abbreviate(tn.noiDungCauHoi, 50) : '')}"></option>
 						</select>
 					</div>
 					<button class="btn btn-primary">Lưu</button>
-					<a href="/admin/dapan" class="btn btn-light">Mới</a>
+					<a th:href="@{/admin/dapan(q=${searchQ},maTN=${filterMaTN},page=${resultPage.number},size=${pageSize})}" class="btn btn-light">Mới</a>
 				</form>
 			</div></div>
 		</div>
 		<div class="col-lg-8">
-			<table class="table table-bordered table-hover">
+			<p class="text-muted small" th:if="${resultPage.totalElements == 0}">Không có bản ghi khớp bộ lọc.</p>
+			<table class="table table-bordered table-hover" th:if="${resultPage.totalElements > 0}">
 				<thead><tr><th>MaDA</th><th>Nội dung</th><th>IsCorrect</th><th>MaTN</th><th></th></tr></thead>
 				<tbody>
 				<tr th:each="i : ${items}">
 					<td th:text="${i.maDA}"></td>
-					<td th:text="${i.noiDungDapAn}"></td>
+					<td class="text-break" th:text="${i.noiDungDapAn}"></td>
 					<td th:text="${i.isCorrect}"></td>
 					<td th:text="${i.maTN}"></td>
 					<td class="text-nowrap">
-						<a class="btn btn-sm btn-warning" th:href="@{/admin/dapan(editId=${i.maDA})}">Sửa</a>
+						<a class="btn btn-sm btn-warning" th:href="@{/admin/dapan(editId=${i.maDA},q=${searchQ},maTN=${filterMaTN},page=${resultPage.number},size=${pageSize})}">Sửa</a>
 						<form th:action="@{/admin/dapan/{id}/delete(id=${i.maDA})}" method="post" class="d-inline">
 							<button class="btn btn-sm btn-danger" onclick="return confirm('Xóa đáp án này?')">Xóa</button>
 						</form>
@@ -53,9 +78,24 @@
 				</tr>
 				</tbody>
 			</table>
+			<nav class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2" th:if="${resultPage.totalPages > 1}">
+				<small class="text-muted">Trang <span th:text="${resultPage.number + 1}"></span> / <span th:text="${resultPage.totalPages}"></span></small>
+				<div class="btn-group">
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}" th:href="@{/admin/dapan(q=${searchQ},maTN=${filterMaTN},page=0,size=${resultPage.size},editId=${param.editId})}">Đầu</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasPrevious()}" th:href="@{/admin/dapan(q=${searchQ},maTN=${filterMaTN},page=${resultPage.number - 1},size=${resultPage.size},editId=${param.editId})}">Trước</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}" th:href="@{/admin/dapan(q=${searchQ},maTN=${filterMaTN},page=${resultPage.number + 1},size=${resultPage.size},editId=${param.editId})}">Sau</a>
+					<a class="btn btn-sm btn-outline-secondary" th:if="${resultPage.hasNext()}" th:href="@{/admin/dapan(q=${searchQ},maTN=${filterMaTN},page=${resultPage.totalPages - 1},size=${resultPage.size},editId=${param.editId})}">Cuối</a>
+				</div>
+			</nav>
 		</div>
 	</div>
 </div>
+<script src="/js/admin-validation.js"></script>
+<script>
+AdminValidation.attachValidation('#formDapAn', [
+	{ name: 'noiDungDapAn', rules: [{ type: 'required', message: 'Nội dung đáp án không được để trống.' }]},
+	{ name: 'maTN', rules: [{ type: 'select', message: 'Vui lòng chọn câu hỏi.' }]}
+]);
+</script>
 </body>
 </html>
-
